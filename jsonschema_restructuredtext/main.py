@@ -2,7 +2,7 @@ import json
 
 import click
 
-import jsonschema_markdown
+import jsonschema_restructuredtext
 
 
 @click.command()
@@ -12,20 +12,6 @@ import jsonschema_markdown
     "--title",
     type=str,
     help="Do not use the title from the schema, use this title instead.",
-)
-@click.option(
-    "--footer/--no-footer",
-    is_flag=True,
-    default=True,
-    show_default=True,
-    help="Add a footer with a link to the project.",
-)
-@click.option(
-    "--empty-columns/--no-empty-columns",
-    is_flag=True,
-    default=True,
-    show_default=True,
-    help="Remove empty columns from the output, useful when deprecated or examples are not used.",
 )
 @click.option(
     "--resolve/--no-resolve",
@@ -48,10 +34,10 @@ import jsonschema_markdown
     show_default=True,
     help="Format of the examples in the output.",
 )
-@click.version_option(package_name="jsonschema_markdown")
-def cli(filename, title, footer, empty_columns, resolve, debug, examples_format):
+@click.version_option(package_name="jsonschema_restructuredtext")
+def cli(filename, title, resolve, debug, examples_format):
     """
-    Load FILENAME and output a markdown version.
+    Load FILENAME and output a reStructuredText version.
 
     Use '-' as FILENAME to read from stdin.
     """
@@ -59,18 +45,16 @@ def cli(filename, title, footer, empty_columns, resolve, debug, examples_format)
     file_contents = json.loads(filename.read())
 
     kwargs = {
-        "footer": footer,
         "replace_refs": resolve,
         "debug": debug,
-        "hide_empty_columns": not empty_columns,
         "examples_format": examples_format,
     }
 
     if title:
         kwargs["title"] = title
 
-    # Convert the file contents to markdown
-    markdown = jsonschema_markdown.generate(file_contents, **kwargs)
+    # Convert the file contents to restructuredtext
+    rst = jsonschema_restructuredtext.generate(file_contents, **kwargs)
 
-    # Output the markdown
-    click.echo(markdown, nl=False)
+    # Output the restructuredtext
+    click.echo(rst, nl=False)

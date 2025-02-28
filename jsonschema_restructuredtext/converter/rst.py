@@ -6,19 +6,17 @@ import urllib.parse
 import yaml
 from loguru import logger
 
-from jsonschema_markdown.utils import (
-    create_const_markdown,
-    create_enum_markdown,
+from jsonschema_restructuredtext.utils import (
+    create_section,
+    create_const,
+    create_enum,
     sort_properties,
+    strip_inside_backticks,
+    dashify,
 )
 
-
-def _should_include_column(column_values):
-    """
-    Check if any item has a non-falsy (non-empty) value for this column.
-    """
-    return any(value for value in column_values)
-
+# Define the section levels, for use with create_section()
+section_level = ["-", "^", "~", '+', '*', '+', '.']
 
 def _format_example(example, examples_format):
     """
@@ -57,48 +55,46 @@ def _get_schema_header(
 
     prefix = "" if not nested else "#"
 
-    md = ""
+    rst = ""
     title = schema.get("title", ref_key) if not nested else ref_key
-    # Add the title and description of the schema
-    md += f"{prefix}# {title}\n\n"
+
+    # Add the section and description of the schema
+    rst += create_section(section_level[0], dashify(ref_key), title)
     description = schema.get("description", description_fallback).strip(" \n")
-    md += description if description else description_fallback
-    md += "\n\n"
+    rst += description
+    rst += "\n\n"
 
     # Add examples if present
     examples = schema.get("examples", [])
     if examples:
-        md += f"{prefix}### Examples\n\n"
+        rst += create_section(section_level[1], dashify(ref_key), "Examples")
         for example in examples:
-            md += _format_example(example, examples_format)
-            md += "\n\n"
+            rst += _format_example(example, examples_format)
+            rst += "\n\n"
 
-    md += f"{prefix}### Type: `{schema.get('type', 'object(?)').strip()}`\n\n"
+    rst += f"Type: `{schema.get('type', 'object(?)').strip()}`\n\n"
 
-    return md
+    return rst
 
 
 def generate(
     schema: dict,
-    title: str = "jsonschema-markdown",
-    footer: bool = True,
+    title: str = "jsonschema-restructuredtext",
     replace_refs: bool = False,
     debug: bool = False,
-    hide_empty_columns: bool = False,
     examples_format: str = "text",
 ) -> str:
     """
-    Generate a markdown string from a given JSON schema.
+    Generate a reStructuredText string from a given JSON schema.
 
     Args:
-        schema: The JSON schema to generate markdown from.
-        title: The title of the markdown document.
-        footer: Whether to include a footer section in the markdown with the current date and time.
+        schema: The JSON schema to generate reStructuredText from.
+        title: The title of the reStructuredText document.
         replace_refs: This feature is experimental. Whether to replace JSON references with their resolved values.
         debug: Whether to print debug messages.
 
     Returns:
-        str: The generated markdown string.
+        str: The generated reStructuredText string.
     """
     # Set the log level
     if debug:
@@ -114,10 +110,11 @@ def generate(
         _schema: dict = jsonref.replace_refs(schema)  # type: ignore
     else:
         _schema = schema
-    markdown = ""
+
+    rst = ""
 
     # Add the title and description of the schema
-    markdown += _get_schema_header(
+    rst += _get_schema_header(
         _schema,
         title,
         "JSON Schema missing a description, provide it using the `description` key in the root of the JSON document.",
@@ -125,39 +122,35 @@ def generate(
     )
 
     defs = _schema.get("definitions", _schema.get("$defs", {}))
-    markdown += _create_definition_table(
-        _schema, defs, hide_empty_columns=hide_empty_columns
+    rst += _create_definition_table(
+        None, _schema, defs
     )
 
     if defs:
-        markdown += "\n---\n\n# Definitions\n\n"
+        rst += "\n---\n\n# Definitions\n\n"
         for key, definition in defs.items():
-            markdown += _get_schema_header(
+            rst += _get_schema_header(
                 definition,
                 key,
                 "No description provided for this model.",
                 nested=True,
                 examples_format=examples_format,
             )
-            markdown += _create_definition_table(
-                definition, defs, hide_empty_columns=hide_empty_columns
+            rst += _create_definition_table(
+                key, definition, defs
             )
 
-    if footer:
-        # Add timestamp and a link to the project
-        markdown += "\n---\n\nMarkdown generated with [jsonschema-markdown](https://github.com/elisiariocouto/jsonschema-markdown)."
-
-    res = markdown.strip(" \n")
+    res = rst.strip(" \n")
     res += "\n"
 
     return res
 
 
-def _create_definition_table(schema: dict, defs: dict, hide_empty_columns: bool) -> str:
+def _create_definition_table(ref_key: str, schema: dict, defs: dict) -> str:
     """
     Create a table of the properties in the schema.
 
-    Returns: Markdown table with the following columns
+    Returns: reStructuredText table with the following columns
     - Property name
     - Type
     - Required
@@ -173,25 +166,26 @@ def _create_definition_table(schema: dict, defs: dict, hide_empty_columns: bool)
     logger.debug(f"Creating definition table for schema: {schema}")
 
     if schema.get("enum"):
-        logger.debug("Creating enum markdown")
-        return create_enum_markdown(schema)
+        logger.debug("Creating enum reStructuredText")
+        return create_enum(schema)
 
     if schema.get("const"):
-        logger.debug("Creating const markdown")
-        return create_const_markdown(schema)
+        logger.debug("Creating const reStructuredText")
+        return create_const(schema)
 
-    markdown = ""
+    rst = ""
 
     # Add a warning before the table to indicate if additional properties are allowed
     if not schema.get("additionalProperties", True):
-        markdown += "> ⚠️ Additional properties are not allowed.\n\n"
+        rst += "   ⚠️ Additional properties are not allowed.\n\n"
 
     if not schema.get("properties"):
-        return markdown
+        return rst
 
     schema["properties"] = sort_properties(schema)
 
     table_items = []
+    item_details = []
 
     for property_name, property_details in schema["properties"].items():
         property_type = property_details.get("type")
@@ -203,12 +197,36 @@ def _create_definition_table(schema: dict, defs: dict, hide_empty_columns: bool)
             property_type, property_details, defs
         )
 
+        property_type = strip_inside_backticks(property_type)
+        possible_values = strip_inside_backticks(possible_values)
+
         logger.debug(
             f"Finished processing {property_name} of type {property_type}: {possible_values}"
         )
 
         default = property_details.get("default")
         description = property_details.get("description", "").strip(" \n")
+
+        if schema.get("required"):
+            required = "Required"
+        else:
+            required = "Optional"
+
+        # Create an item anchor (with context) for referencing from table to item detail
+        if ref_key:
+            item_anchor = dashify(ref_key) + "-" + dashify(property_name)
+        else:
+            item_anchor = dashify(property_name)
+
+        # Short description is either title or first sentence of description
+        if property_details.get("title"):
+            short_description = property_details.get("title")
+        else:
+            short_description = description.split(".")[0]
+
+        # Trim and add link if short description is longer than 32 characters
+        if len(short_description) > 32:
+            short_description = short_description[:32] + f" :ref:`More <{item_anchor}>`"
 
         # Add backticks for each example, and join them with a comma and a space into a single string
         examples = ", ".join(
@@ -219,77 +237,55 @@ def _create_definition_table(schema: dict, defs: dict, hide_empty_columns: bool)
         )
 
         item = {
-            "property": property_name,
-            "type": property_type,
-            "required": "✅" if property_name in schema.get("required", []) else "",
-            "possible_values": possible_values,
-            "deprecated": (
-                "⛔️"
-                if "[deprecated]"
-                in str(property_details.get("description", "")).lower()
-                or property_details.get("deprecated")
-                else ""
-            ),
-            "default": "`" + json.dumps(default) + "`" if default else "",
-            "description": description,
-            "examples": examples,
+            "property": f":ref:`{property_name} <{item_anchor}>`",
+            "type": f"\"{property_type}\"",
+            "required": f"\"{required}\"",
+            "description": f"\"{short_description}\""
         }
+
         table_items.append(item)
+
+        # Generate item detail
+        item_detail = create_section(section_level[2], item_anchor, property_name)
+        item_detail += f"{description}\n\n"
+        item_detail += f"Type: {property_type}\n\n"
+
+        if property_details.get("required"):
+            item_detail += f"Required: {item['required']}\n\n"
+
+        if property_details.get("deprecated"):
+            item_detail += f"Deprecated: {item['deprecated']}\n\n"
+
+        if default:
+            item_detail += f"Default: `{json.dumps(default)}`\n\n"
+
+        if possible_values:
+            item_detail += f"Possible Values: {possible_values}\n\n"
+
+        if examples:
+            item_detail += f"Examples: {examples}\n\n"
+
+        item_details.append(item_detail)
 
     # This should not happen, but just in case
     if not table_items:
-        markdown += "No items to display."
-        return markdown
+        rst += "No items to display."
+        return rst
 
-    if hide_empty_columns:
-        always_include_columns = ["property", "type", "required", "description"]
-        # Determine which columns should be included
-        columns = list(table_items[0].keys())
-        include_column = {
-            column: _should_include_column([item[column] for item in table_items])
-            for column in columns
-        }
+    # Generate the header row
+    capitalized_columns = [
+        f'"{col.replace("_", " ").capitalize()}"' for col in table_items[0]
+    ]
 
-        # Include the columns that should always be included
-        for column in always_include_columns:
-            include_column[column] = True
+    # Generate the table
+    rst += (f".. csv-table:: {schema.get('title', '')}\n"
+            f"   :header: {', '.join(capitalized_columns)}\n\n")
 
-        # Generate the header row
-        capitalized_columns = [
-            col.replace("_", " ").capitalize() for col in columns if include_column[col]
-        ]
-        markdown += "| " + " | ".join(capitalized_columns) + " |\n"
-        # Generate the separator row
-        markdown += (
-            "| "
-            + " | ".join(["-" * len(col) for col in columns if include_column[col]])
-            + " |\n"
-        )
+    # Generate the item rows
+    for item in table_items:
+        rst += f"   {', '.join(item.values())}\n"
 
-        # Generate the item rows
-        for item in table_items:
-            markdown += (
-                "| "
-                + " | ".join([str(item[col]) for col in columns if include_column[col]])
-                + " |\n"
-            )
-    else:
-        # Generate the header row
-        capitalized_columns = [
-            col.replace("_", " ").capitalize() for col in table_items[0]
-        ]
-        markdown += "| " + " | ".join(capitalized_columns) + " |\n"
-
-        # Generate the separator row
-        markdown += (
-            "| " + " | ".join(["-" * len(col) for col in table_items[0]]) + " |\n"
-        )
-        # Generate the item rows
-
-        for item in table_items:
-            markdown += "| " + " | ".join(item.values()) + " |\n"
-
-    return f"{markdown}\n"
+    return rst + "\n\n" + "\n\n".join(item_details)
 
 
 def _get_property_ref(ref, defs):
@@ -454,11 +450,13 @@ def _get_property_details(
 
     elif "pattern" in property_details:
         pattern = property_details["pattern"]
-        res_details = f"[`{pattern}`](https://regex101.com/?regex={urllib.parse.quote_plus(pattern)})"
+        res_details = f"`{pattern} <https://regex101.com/?regex={urllib.parse.quote_plus(pattern)}>`_"
         return f"`{property_type}`", res_details
+
     elif "const" in property_details:
         res_details = f"`{property_details.get('const')}`"
         return "`const`", res_details
+
     elif property_type in ["integer", "number"]:
         # write the range of the integer in the format a <= x <= b
         minimum = property_details.get("minimum")
@@ -492,6 +490,7 @@ def _get_property_details(
             res_details += f" and multiple of `{multiple_of}`"
 
         return f"`{property_type}`", res_details
+
     elif property_details.get("type") == "string":
         _format = property_details.get("format")
         _max_length = property_details.get("maxLength")
@@ -499,7 +498,7 @@ def _get_property_details(
         if _format:
             return (
                 f"`{property_type}`",
-                f"Format: [`{_format}`](https://json-schema.org/understanding-json-schema/reference/string#built-in-formats)",
+                f"Format: `{_format}`",
             )
         elif _max_length or _min_length:
             if _max_length and _min_length:
@@ -515,5 +514,6 @@ def _get_property_details(
                 return f"`{property_type}`", property_type
         else:
             return f"`{property_type}`", property_type
+
     else:
         return f"`{property_type}`", property_type
