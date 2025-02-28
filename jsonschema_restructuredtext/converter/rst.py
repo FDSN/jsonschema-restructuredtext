@@ -182,7 +182,8 @@ def _create_definition_table(ref_key: str, schema: dict, defs: dict) -> str:
     if not schema.get("properties"):
         return rst
 
-    schema["properties"] = sort_properties(schema)
+    # Use the sort_properties function to maintain the order
+    sorted_properties = sort_properties(schema)
 
     table_items = []
     item_details = []

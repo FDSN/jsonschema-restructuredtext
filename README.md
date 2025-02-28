@@ -71,18 +71,17 @@ this project does not currently support all features, but it should support:
   - Default values
   - Descriptions and titles
   - Nested objects using `$defs` or `definitions`
+  - Nested objects with dot notation (e.g., `parent.child[].property`)
   - Basic `oneOf`, `anyOf`, `allOf` functionality
   - Arrays
   - Integers with minimum, maximum values and exclusives
   - Boolean values
-  - Deprecated fields (using the `deprecated` option, additionaly searches for case-insensitive `deprecated` in the field description)
+  - Deprecated fields (using the `deprecated` option, additionally searches for case-insensitive `deprecated` in the field description)
   - Supports optional YAML and JSON formatting for examples
 
 ## Caveats
-  - This project is still in early development, and the output may change in the future.
   - Custom definitions are expected to be in the same file as the schema that uses them,
     in the `definitions` or `$defs` parameter at the root of the document.
-  - Inline nested definitions are not represented in the output yet. See #18.
 
 ---
 
@@ -127,7 +126,7 @@ Given the following JSON Schema:
 }
 ```
 
-### Example 1 Ouput
+### Example 1 Output
 The following reStructuredText will be generated:
 
 ---
