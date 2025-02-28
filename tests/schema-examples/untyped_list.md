@@ -1,15 +1,40 @@
-# Component
+.. _jsonschema-restructuredtext:
 
+Component
+---------------------------------------------
 Test case with untyped list
 
-### Type: `object`
+Type: `object`
 
-| Property | Type | Required | Possible values | Deprecated | Default | Description | Examples |
-| -------- | ---- | -------- | --------------- | ---------- | ------- | ----------- | -------- |
-| type | `string` |  | `test` |  | `"test"` |  |  |
-| ingress_cidr_blocks | `array` |  | Any type |  |  | A list of CIDR blocks allowed to connect. |  |
+.. csv-table:: Component
+   :header: "Property", "Type", "Required", "Description"
+
+   :ref:`type <type>`, "`string`", "Optional", "Type"
+   :ref:`ingress_cidr_blocks <ingress-cidr-blocks>`, "`array`", "Optional", "Ingress Cidr Blocks"
 
 
----
 
-Markdown generated with [jsonschema-markdown](https://github.com/elisiariocouto/jsonschema-markdown).
+.. _type:
+
+type
+~~~~~~~~~~~~~~~~~
+
+
+Type: `string`
+
+Default: `"test"`
+
+Possible Values: `test`
+
+
+
+
+.. _ingress-cidr-blocks:
+
+ingress_cidr_blocks
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+A list of CIDR blocks allowed to connect.
+
+Type: `array`
+
+Possible Values: Any type

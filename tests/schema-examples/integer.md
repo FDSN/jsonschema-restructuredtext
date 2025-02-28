@@ -1,17 +1,68 @@
-# jsonschema-markdown
+.. _jsonschema-restructuredtext:
 
+jsonschema-restructuredtext
+---------------------------------------------------------------
 JSON Schema missing a description, provide it using the `description` key in the root of the JSON document.
 
-### Type: `object`
+Type: `object`
 
-| Property | Type | Required | Possible values | Deprecated | Default | Description | Examples |
-| -------- | ---- | -------- | --------------- | ---------- | ------- | ----------- | -------- |
-| firstName | `string` |  | string |  |  | The person's first name. |  |
-| lastName | `string` |  | string |  |  | The person's last name. |  |
-| age | `integer` |  | `0 <= x <= 150` and multiple of `1` |  | `25` | Age in years which must be equal to or greater than zero. |  |
-| email | `string` |  | Format: [`email`](https://json-schema.org/understanding-json-schema/reference/string#built-in-formats) |  |  | Email address of the person. |  |
+.. csv-table:: 
+   :header: "Property", "Type", "Required", "Description"
+
+   :ref:`firstName <firstname>`, "`string`", "Optional", "The person's first name"
+   :ref:`lastName <lastname>`, "`string`", "Optional", "The person's last name"
+   :ref:`age <age>`, "`integer`", "Optional", "Age in years which must be equal :ref:`More <age>`"
+   :ref:`email <email>`, "`string`", "Optional", "Email address of the person"
 
 
----
 
-Markdown generated with [jsonschema-markdown](https://github.com/elisiariocouto/jsonschema-markdown).
+.. _firstname:
+
+firstName
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The person's first name.
+
+Type: `string`
+
+Possible Values: string
+
+
+
+
+.. _lastname:
+
+lastName
+~~~~~~~~~~~~~~~~~~~~~~~~~
+The person's last name.
+
+Type: `string`
+
+Possible Values: string
+
+
+
+
+.. _age:
+
+age
+~~~~~~~~~~~~~~~
+Age in years which must be equal to or greater than zero.
+
+Type: `integer`
+
+Default: `25`
+
+Possible Values: `0 <= x <= 150` and multiple of `1`
+
+
+
+
+.. _email:
+
+email
+~~~~~~~~~~~~~~~~~~~
+Email address of the person.
+
+Type: `string`
+
+Possible Values: Format: `email`

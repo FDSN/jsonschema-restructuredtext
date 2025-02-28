@@ -1,14 +1,24 @@
-# Foo
+.. _jsonschema-restructuredtext:
 
+Foo
+---------------------------------------
 JSON Schema missing a description, provide it using the `description` key in the root of the JSON document.
 
-### Type: `object`
+Type: `object`
 
-| Property | Type | Required | Possible values | Deprecated | Default | Description | Examples |
-| -------- | ---- | -------- | --------------- | ---------- | ------- | ----------- | -------- |
-| bar | `string` or `null` | ✅ | string |  |  |  |  |
+.. csv-table:: Foo
+   :header: "Property", "Type", "Required", "Description"
+
+   :ref:`bar <bar>`, "`string` or `null`", "Required", "Bar"
 
 
----
 
-Markdown generated with [jsonschema-markdown](https://github.com/elisiariocouto/jsonschema-markdown).
+.. _bar:
+
+bar
+~~~~~~~~~~~~~~~
+
+
+Type: `string` or `null`
+
+Possible Values: string

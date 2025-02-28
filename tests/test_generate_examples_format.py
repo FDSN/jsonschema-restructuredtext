@@ -1,10 +1,10 @@
 import pytest
 
-from jsonschema_markdown.converter.markdown import _format_example
+from jsonschema_restructuredtext.converter.rst import _format_example
 
 
 @pytest.mark.parametrize(
-    "example, format_type, expected_md",
+    "example, format_type, expected",
     [
         ({"key": "value"}, "yaml", "```yaml\nkey: value\n\n```"),
         ("example string", "yaml", "```yaml\nexample string\n```"),
@@ -14,6 +14,6 @@ from jsonschema_markdown.converter.markdown import _format_example
         ({"key": "value"}, "invalid_format", "```\n{'key': 'value'}\n```"),
     ],
 )
-def test_generate_examples_format(example, format_type, expected_md):
+def test_generate_examples_format(example, format_type, expected):
     formatted = _format_example(example, format_type)
-    assert formatted == expected_md
+    assert formatted == expected
