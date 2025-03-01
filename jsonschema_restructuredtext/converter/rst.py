@@ -286,7 +286,7 @@ def _create_definition_table(ref_key: str, schema: dict, defs: dict) -> str:
     for item in table_items:
         rst += f"   {', '.join(item.values())}\n"
 
-    return rst + "\n\n" + "\n\n".join(item_details)
+    return rst + "".join(item_details)
 
 
 def _get_property_ref(ref, defs):
