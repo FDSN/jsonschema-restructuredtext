@@ -15,8 +15,6 @@ Type: `object`
 
 type
 ~~~~
-
-
 Type: `string`
 
 Default: `"test"`

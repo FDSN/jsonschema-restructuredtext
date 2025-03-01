@@ -137,11 +137,6 @@ Type: `object` or `null`
 
 Possible Values: [ExtraPackAdvanced](#extrapackadvanced) and/or [ExtraPackBasic](#extrapackbasic)
 
-
----
-
-# Definitions
-
 .. _airbag:
 
 Airbag

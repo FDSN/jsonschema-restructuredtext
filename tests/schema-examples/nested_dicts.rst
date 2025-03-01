@@ -15,8 +15,6 @@ Type: `object`
 
 Foobar
 ~~~~~~
-
-
 Type: `object`
 
 Possible Values: object
@@ -25,8 +23,6 @@ Possible Values: object
 
 Foobaz
 ~~~~~~
-
-
 Type: `array`
 
 Possible Values: object

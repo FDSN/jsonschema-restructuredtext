@@ -127,7 +127,6 @@ def generate(
     )
 
     if defs:
-        rst += "\n---\n\n# Definitions\n\n"
         for key, definition in defs.items():
             rst += _get_schema_header(
                 definition,
@@ -248,8 +247,12 @@ def _create_definition_table(ref_key: str, schema: dict, defs: dict) -> str:
 
         # Generate item detail
         item_detail = create_section(section_level[2], item_anchor, property_name)
-        item_detail += f"{description}\n\n"
-        item_detail += f"Type: {property_type}\n\n"
+
+        if description:
+            item_detail += f"{description}\n\n"
+
+        if property_type:
+            item_detail += f"Type: {property_type}\n\n"
 
         if property_details.get("required"):
             item_detail += f"Required: {item['required']}\n\n"

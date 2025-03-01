@@ -14,8 +14,6 @@ Type: `object`
 
 bar
 ~~~
-
-
 Type: `integer` or `string`
 
 Possible Values: integer and/or string
