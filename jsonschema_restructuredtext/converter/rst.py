@@ -26,18 +26,18 @@ def _format_example(example, examples_format):
     try:
         if examples_format == "yaml":
             if isinstance(example, dict):
-                return f"```yaml\n{yaml.dump(example)}\n```"
+                return f"``yaml\n{yaml.dump(example)}\n``"
             else:
                 return f"```yaml\n{example}\n```"
         elif examples_format == "json":
             if isinstance(example, dict):
-                return f"```json\n{json.dumps(example, indent=2)}\n```"
+                return f"``json\n{json.dumps(example, indent=2)}\n``"
             else:
-                return f"```json\n{example}\n```"
+                return f"``json\n{example}\n``"
     except Exception:
         logger.debug(f"Failed to format example in '{examples_format}': {example}")
 
-    return f"```\n{example}\n```"
+    return f"``\n{example}\n``"
 
 
 def _get_schema_header(
@@ -63,14 +63,6 @@ def _get_schema_header(
     description = schema.get("description", description_fallback).strip(" \n")
     rst += description
     rst += "\n\n"
-
-    # Add examples if present
-    examples = schema.get("examples", [])
-    if examples:
-        rst += create_section(section_level[1], dashify(ref_key), "Examples")
-        for example in examples:
-            rst += _format_example(example, examples_format)
-            rst += "\n\n"
 
     rst += f"Type: `{schema.get('type', 'object(?)').strip()}`\n\n"
 
@@ -231,7 +223,7 @@ def _create_definition_table(ref_key: str, schema: dict, defs: dict) -> str:
         # Add backticks for each example, and join them with a comma and a space into a single string
         examples = ", ".join(
             [
-                f"```{str(example)}```"
+                f"``{str(example)}``"
                 for example in property_details.get("examples", [])
             ]
         )

@@ -5,7 +5,8 @@ def create_section(punc: str, anchor: str, header: str) -> str:
     Create rst section header.
     """
 
-    output = f".. _{anchor}:\n"
+    output = "\n----\n\n"
+    output += f".. _{anchor}:\n"
     output += f"\n{header}\n"
     output += punc * len(header) + "\n"
 
