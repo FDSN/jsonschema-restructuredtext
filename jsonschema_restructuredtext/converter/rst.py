@@ -48,6 +48,7 @@ def generate(
     schema: dict,
     title: str = "jsonschema-restructuredtext",
     replace_refs: bool = False,
+    suppress_undocumented: bool = False,
     section_punctuation: list = DEFAULT_SECTION_PUNCTUATION,
     debug: bool = False,
 ) -> str:
@@ -96,6 +97,12 @@ def generate(
 
     if defs:
         for key, definition in defs.items():
+
+            if suppress_undocumented and not any(
+                definition.get(k) for k in ["title", "description", "examples"]
+            ):
+                continue
+
             rst += _get_schema_header(
                 definition,
                 key,
@@ -215,35 +222,27 @@ def _create_definition_table(ref_key: str, schema: dict, defs: dict,
         table_items.append(item)
 
         # Generate item detail
-        # item_detail = create_section(section_punctuation[section_level + 1],
-        #                              item_anchor, property_name)
-
-#    output = "\n----\n\n"
-#    output += f".. _{anchor}:\n"
-
         item_detail = f"\n----\n\n.. _{item_anchor}:\n\n"
         item_detail += f".. rubric:: {property_name}\n\n"
 
         if description:
             item_detail += f"{description}\n\n"
 
-        if property_type:
-            item_detail += f"Type: {property_type}\n\n"
+        item_detail += f":Type: {property_type}\n\n"
 
-        if property_details.get("required"):
-            item_detail += f"Required: {item['required']}\n\n"
+        item_detail += f":Required: {required}\n\n"
 
         if property_details.get("deprecated"):
-            item_detail += f"Deprecated: {item['deprecated']}\n\n"
+            item_detail += f":Deprecated: {item['deprecated']}\n\n"
 
         if default:
-            item_detail += f"Default: `{json.dumps(default)}`\n\n"
+            item_detail += f":Default: `{json.dumps(default)}`\n\n"
 
         if possible_values:
-            item_detail += f"Possible Values: {possible_values}\n\n"
+            item_detail += f":Possible Values: {possible_values}\n\n"
 
         if examples:
-            item_detail += f"Examples: {examples}\n\n"
+            item_detail += f":Examples: {examples}\n\n"
 
         item_details.append(item_detail)
 

@@ -30,6 +30,13 @@ def parse_comma_separated(ctx, param, value):
     help="[Experimental] Resolve $ref pointers.",
 )
 @click.option(
+    "--suppress-undocumented/--suppress-undocumented",
+    is_flag=True,
+    default=False,
+    show_default=True,
+    help="Suppress output of properties that do not have title, description, or examples.",
+)
+@click.option(
     "--section-punctuation",
     multiple=True,
     default=jsonschema_restructuredtext.constants.DEFAULT_SECTION_PUNCTUATION,
@@ -44,15 +51,8 @@ def parse_comma_separated(ctx, param, value):
     show_default=True,
     help="Enable debug output.",
 )
-@click.option(
-    "--examples-format",
-    type=click.Choice(["text", "yaml", "json"], case_sensitive=False),
-    default="text",
-    show_default=True,
-    help="Format of the examples in the output.",
-)
 @click.version_option(package_name="jsonschema_restructuredtext")
-def cli(filename, title, resolve, section_punctuation, debug, examples_format):
+def cli(filename, title, resolve, suppress_undocumented, section_punctuation, debug):
     """
     Load FILENAME and output a reStructuredText version.
 
@@ -63,6 +63,7 @@ def cli(filename, title, resolve, section_punctuation, debug, examples_format):
 
     kwargs = {
         "replace_refs": resolve,
+        "suppress_undocumented": suppress_undocumented,
         "section_punctuation": section_punctuation,
         "debug": debug,
     }
