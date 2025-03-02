@@ -4,6 +4,15 @@ import click
 
 import jsonschema_restructuredtext
 
+def parse_comma_separated(ctx, param, value):
+    if not value:
+        return []
+
+    # Since 'multiple=True', the input will be a tuple; combine all inputs into a single string
+    combined = ",".join(value)
+
+    # Split on commas to create a list
+    return [item.strip() for item in combined.split(",")]
 
 @click.command()
 @click.argument("filename", type=click.File("r"))
@@ -21,6 +30,14 @@ import jsonschema_restructuredtext
     help="[Experimental] Resolve $ref pointers.",
 )
 @click.option(
+    "--section-punctuation",
+    multiple=True,
+    default=jsonschema_restructuredtext.constants.DEFAULT_SECTION_PUNCTUATION,
+    show_default=True,
+    callback=parse_comma_separated,
+    help="Provide a comma-separated list of punctuation values to use for sections.",
+)
+@click.option(
     "--debug/--no-debug",
     is_flag=True,
     default=False,
@@ -35,7 +52,7 @@ import jsonschema_restructuredtext
     help="Format of the examples in the output.",
 )
 @click.version_option(package_name="jsonschema_restructuredtext")
-def cli(filename, title, resolve, debug, examples_format):
+def cli(filename, title, resolve, section_punctuation, debug, examples_format):
     """
     Load FILENAME and output a reStructuredText version.
 
@@ -46,8 +63,8 @@ def cli(filename, title, resolve, debug, examples_format):
 
     kwargs = {
         "replace_refs": resolve,
+        "section_punctuation": section_punctuation,
         "debug": debug,
-        "examples_format": examples_format,
     }
 
     if title:

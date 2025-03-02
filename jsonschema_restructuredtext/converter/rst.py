@@ -6,6 +6,8 @@ import urllib.parse
 import yaml
 from loguru import logger
 
+from jsonschema_restructuredtext.constants import DEFAULT_SECTION_PUNCTUATION
+
 from jsonschema_restructuredtext.utils import (
     create_section,
     create_const,
@@ -15,37 +17,12 @@ from jsonschema_restructuredtext.utils import (
     dashify,
 )
 
-# Define the section levels, for use with create_section()
-section_level = ["-", "^", "~", '+', '*', '+', '.']
-
-def _format_example(example, examples_format):
-    """
-    Format the example based on the examples_format. Only works for dict.
-    """
-
-    try:
-        if examples_format == "yaml":
-            if isinstance(example, dict):
-                return f"``yaml\n{yaml.dump(example)}\n``"
-            else:
-                return f"```yaml\n{example}\n```"
-        elif examples_format == "json":
-            if isinstance(example, dict):
-                return f"``json\n{json.dumps(example, indent=2)}\n``"
-            else:
-                return f"``json\n{example}\n``"
-    except Exception:
-        logger.debug(f"Failed to format example in '{examples_format}': {example}")
-
-    return f"``\n{example}\n``"
-
-
 def _get_schema_header(
     schema: dict,
     ref_key: str,
     description_fallback: str,
-    nested: bool = False,
-    examples_format: str = "text",
+    section_punctuation: list = DEFAULT_SECTION_PUNCTUATION,
+    schema_level: int = 0,
 ) -> str:
     """
     Get the title and description of the schema.
@@ -53,13 +30,11 @@ def _get_schema_header(
     If nested, all headings are increased by one level.
     """
 
-    prefix = "" if not nested else "#"
-
     rst = ""
-    title = schema.get("title", ref_key) if not nested else ref_key
+    title = schema.get("title", ref_key)
 
     # Add the section and description of the schema
-    rst += create_section(section_level[0], dashify(ref_key), title)
+    rst += create_section(section_punctuation[schema_level], dashify(ref_key), title)
     description = schema.get("description", description_fallback).strip(" \n")
     rst += description
     rst += "\n\n"
@@ -73,8 +48,8 @@ def generate(
     schema: dict,
     title: str = "jsonschema-restructuredtext",
     replace_refs: bool = False,
+    section_punctuation: list = DEFAULT_SECTION_PUNCTUATION,
     debug: bool = False,
-    examples_format: str = "text",
 ) -> str:
     """
     Generate a reStructuredText string from a given JSON schema.
@@ -110,12 +85,13 @@ def generate(
         _schema,
         title,
         "JSON Schema missing a description, provide it using the `description` key in the root of the JSON document.",
-        examples_format=examples_format,
+        section_punctuation,
+        schema_level=0
     )
 
     defs = _schema.get("definitions", _schema.get("$defs", {}))
     rst += _create_definition_table(
-        None, _schema, defs
+        None, _schema, defs, section_punctuation, section_level=0
     )
 
     if defs:
@@ -124,11 +100,11 @@ def generate(
                 definition,
                 key,
                 "No description provided for this model.",
-                nested=True,
-                examples_format=examples_format,
+                section_punctuation,
+                schema_level=1
             )
             rst += _create_definition_table(
-                key, definition, defs
+                key, definition, defs, section_punctuation, section_level=0
             )
 
     res = rst.strip(" \n")
@@ -137,7 +113,8 @@ def generate(
     return res
 
 
-def _create_definition_table(ref_key: str, schema: dict, defs: dict) -> str:
+def _create_definition_table(ref_key: str, schema: dict, defs: dict,
+                             section_punctuation, section_level) -> str:
     """
     Create a table of the properties in the schema.
 
@@ -238,7 +215,14 @@ def _create_definition_table(ref_key: str, schema: dict, defs: dict) -> str:
         table_items.append(item)
 
         # Generate item detail
-        item_detail = create_section(section_level[2], item_anchor, property_name)
+        # item_detail = create_section(section_punctuation[section_level + 1],
+        #                              item_anchor, property_name)
+
+#    output = "\n----\n\n"
+#    output += f".. _{anchor}:\n"
+
+        item_detail = f"\n----\n\n.. _{item_anchor}:\n\n"
+        item_detail += f".. rubric:: {property_name}\n\n"
 
         if description:
             item_detail += f"{description}\n\n"
