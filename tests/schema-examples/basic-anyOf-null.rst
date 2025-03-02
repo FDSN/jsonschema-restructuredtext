@@ -1,7 +1,9 @@
+----
+
 .. _jsonschema-restructuredtext:
 
 Foo
----
+===
 JSON Schema missing a description, provide it using the `description` key in the root of the JSON document.
 
 Type: `object`
@@ -10,10 +12,15 @@ Type: `object`
    :header: "Property", "Type", "Required", "Description"
 
    :ref:`bar <bar>`, "`string` or `null`", "Required", "Bar"
+
+----
+
 .. _bar:
 
-bar
-~~~
-Type: `string` or `null`
+.. rubric:: bar
 
-Possible Values: string
+:Type: `string` or `null`
+
+:Required: Required
+
+:Possible Values: string
