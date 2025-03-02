@@ -30,7 +30,7 @@ def parse_comma_separated(ctx, param, value):
     help="[Experimental] Resolve $ref pointers.",
 )
 @click.option(
-    "--suppress-undocumented/--suppress-undocumented",
+    "--suppress-undocumented/--no-suppress-undocumented",
     is_flag=True,
     default=False,
     show_default=True,
