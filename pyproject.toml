@@ -1,34 +1,32 @@
-[tool.poetry]
+[project]
 name = "jsonschema-restructuredtext"
-license = "MIT"
 version = "0.0.1"
 description = "Export a JSON Schema document to restructuredtext documentation."
-repository = "https://github.com/FDSN/jsonschema-restructuredtext"
+requires-python = "~=3.9"
 readme = "README.md"
-classifiers = [
-  "Development Status :: 3 - Alpha",
-  "Environment :: Console",
-  "Intended Audience :: Developers",
-  "Topic :: Documentation",
-  "Topic :: File Formats :: JSON :: JSON Schema",
-  "Topic :: Text Processing :: Markup :: reStructuredText",
-  "Topic :: Utilities",
-  "Topic :: Software Development :: Documentation",
-]
+license = "MIT"
 keywords = ["jsonschema", "restructuredtext", "documentation", "docs", "json"]
-packages = [{ include = "jsonschema_restructuredtext" }]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Topic :: Documentation",
+    "Topic :: File Formats :: JSON :: JSON Schema",
+    "Topic :: Text Processing :: Markup :: reStructuredText",
+    "Topic :: Utilities",
+    "Topic :: Software Development :: Documentation",
+]
+dependencies = [
+    "click>=8.1.7,<9",
+    "loguru>=0.7.2,<0.8",
+    "jsonref>=1.1.0,<2",
+    "pyyaml>=6.0.2,<7",
+]
 
 [project.urls]
-Repository = "https://github.com/elisiariocouto/jsonschema-markdown"
+Repository = "https://github.com/FDSN/jsonschema-restructuredtext"
 
-[tool.poetry.group.dev.dependencies]
-ruff = "^0.8.1"
-pytest = "^8.0.0"
-pre-commit = "^3.7.0"
-pydantic = "^2.6.1"
-pytest-cov = "^5.0.0"
-
-[tool.poetry.scripts]
+[project.scripts]
 jsonschema-restructuredtext = "jsonschema_restructuredtext.main:cli"
 
 [dependency-groups]
@@ -41,10 +39,10 @@ dev = [
 ]
 
 [tool.hatch.build.targets.sdist]
-include = ["jsonschema_markdown"]
+include = ["jsonschema_restructuredtext"]
 
 [tool.hatch.build.targets.wheel]
-include = ["jsonschema_markdown"]
+include = ["jsonschema_restructuredtext"]
 
 [build-system]
 requires = ["hatchling"]
