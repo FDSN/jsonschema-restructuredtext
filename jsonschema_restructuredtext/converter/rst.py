@@ -293,7 +293,7 @@ def _get_property_ref(ref, defs):
     if ref in defs:
         return (
             f"`{t}`" if t else "Missing type",
-            f"[{ref}](#{ref.replace(' ', '-').lower()})",
+            f":ref:`{ref} <{dashify(ref)}>`",
         )
     else:
         return "Missing type", "Missing definition"
