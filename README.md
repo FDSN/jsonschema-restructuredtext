@@ -5,10 +5,14 @@ documentation that is easy to read and understand.
 
 Can be used as a command line tool or as a library.
 
+> [!NOTE]
+> This tool is not intended for general use (yet), and may produce undesirable output
+> for arbitrary schemas outside of the FDSN use cases.
+
 ## Installation
 
 ```bash
-pipx install jsonschema-restructuredtext
+pip install git+https://github.com/FDSN/jsonschema-restructuredtext.git@main
 ```
 
 ## Usage
@@ -27,23 +31,21 @@ Usage: jsonschema-restructuredtext [OPTIONS] FILENAME
 Options:
   -t, --title TEXT                Do not use the title from the schema, use
                                   this title instead.
-  --footer / --no-footer          Add a footer with a link to the project.
-                                  [default: footer]
-  --empty-columns / --no-empty-columns
-                                  Remove empty columns from the output, useful
-                                  when deprecated or examples are not used.
-                                  [default: empty-columns]
   --resolve / --no-resolve        [Experimental] Resolve $ref pointers.
                                   [default: no-resolve]
+  --suppress-undocumented / --no-suppress-undocumented
+                                  Suppress output of properties that do not
+                                  have title, description, or examples.
+                                  [default: no-suppress-undocumented]
+  --section-punctuation TEXT      Provide a comma-separated list of
+                                  punctuation values to use for sections.
+                                  [default: =, -, ^, ~, +, *, +, .]
   --debug / --no-debug            Enable debug output.  [default: no-debug]
-  --examples-format [text|yaml|json]
-                                  Format of the examples in the output.
-                                  [default: text]
   --version                       Show the version and exit.
   --help                          Show this message and exit.
 
 # Example
-$ jsonschema-restructuredtext schema.json > schema.rst
+$ jsonschema-restructuredtext --title "My JSON Schema" schema.json > schema.rst
 ```
 
 ## Usage as a library
@@ -129,13 +131,83 @@ Given the following JSON Schema:
 ### Example 1 Output
 The following reStructuredText will be generated:
 
----
+```
+----
+.. _example-json-schema:
 
+Example JSON Schema
+===================
+A representation of a movie
 
----
+Type: `object`
 
-### Example 2
+.. csv-table::
+   :header: "Property", "Type", "Required", "Description"
 
-In [tests/model.py](tests/model.py) you can see a more complex example of a model that is exported as a JSON Schema.
+   :ref:`title <title>`, "`string`", "Required", ""
+   :ref:`director <director>`, "`string`", "Required", ""
+   :ref:`releaseDate <releasedate>`, "`string`", "Required", ""
+   :ref:`genre <genre>`, "`string`", "Required", ""
+   :ref:`duration <duration>`, "`string`", "Required", ""
+   :ref:`cast <cast>`, "`array`", "Required", ""
 
-The output can be seen in [tests/model.md](tests/model.md).
+----
+
+.. _title:
+
+**title**
+
+:Type: string
+:Required: Required
+:Possible Values: string
+
+----
+
+.. _director:
+
+**director**
+
+:Type: string
+:Required: Required
+:Possible Values: string
+
+----
+
+.. _releasedate:
+
+**releaseDate**
+
+:Type: string
+:Required: Required
+:Possible Values: Format: `date`
+
+----
+
+.. _genre:
+
+**genre**
+
+:Type: string
+:Required: Required
+:Possible Values: `Action` `Comedy` `Drama` `Science Fiction`
+
+----
+
+.. _duration:
+
+**duration**
+
+:Type: string
+:Required: Required
+:Possible Values: string
+
+----
+
+.. _cast:
+
+**cast**
+
+:Type: array
+:Required: Required
+:Possible Values: string
+```
