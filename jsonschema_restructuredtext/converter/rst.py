@@ -206,7 +206,7 @@ def _create_definition_table(json_path: list, schema: dict, defs: dict,
         # Add backticks for each example, and join them with a comma and a space into a single string
         examples = ", ".join(
             [
-                f"``{str(example)}``"
+                f"``{json.dumps(example)}``"
                 for example in property_details.get("examples", [])
             ]
         )
@@ -254,6 +254,7 @@ def _create_definition_table(json_path: list, schema: dict, defs: dict,
 
         # If field type is object or array, add a table of its properties
         # by recursively calling this function.
+        # This probably doesn't work for arrays yet...
         if property_type in ["object", "array"]:
             item_details.append(
                 "\n" +

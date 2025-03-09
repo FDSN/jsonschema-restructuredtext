@@ -211,3 +211,8 @@ Type: `object`
 :Required: Required
 :Possible Values: string
 ```
+
+### Credit
+
+This project is a cannibalization of:
+https://github.com/elisiariocouto/jsonschema-markdown
