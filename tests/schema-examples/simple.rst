@@ -1,6 +1,6 @@
 ----
 
-.. _jsonschema-restructuredtext:
+.. _json-schema:
 
 Person
 ======
@@ -19,42 +19,34 @@ Type: `object`
 
 .. _firstname:
 
-.. rubric:: firstName
+**firstName**
 
 The person's first name.
 
 :Type: `string`
-
 :Required: Optional
-
 :Possible Values: string
-
 
 ----
 
 .. _lastname:
 
-.. rubric:: lastName
+**lastName**
 
 The person's last name.
 
 :Type: `string`
-
 :Required: Optional
-
 :Possible Values: string
-
 
 ----
 
 .. _age:
 
-.. rubric:: age
+**age**
 
 Age in years which must be equal to or greater than zero.
 
 :Type: `integer`
-
 :Required: Optional
-
 :Possible Values: `0 <= x`

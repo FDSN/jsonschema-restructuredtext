@@ -1,6 +1,6 @@
 ----
 
-.. _jsonschema-restructuredtext:
+.. _json-schema:
 
 Component
 =========
@@ -18,27 +18,21 @@ Type: `object`
 
 .. _type:
 
-.. rubric:: type
+**type**
 
 :Type: `string`
-
 :Required: Optional
-
 :Default: `"test"`
-
 :Possible Values: `test`
-
 
 ----
 
 .. _ingress-cidr-blocks:
 
-.. rubric:: ingress_cidr_blocks
+**ingress_cidr_blocks**
 
 A list of CIDR blocks allowed to connect.
 
 :Type: `array`
-
 :Required: Optional
-
 :Possible Values: Any type

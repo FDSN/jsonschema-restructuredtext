@@ -1,9 +1,9 @@
 ----
 
-.. _jsonschema-restructuredtext:
+.. _json-schema:
 
-jsonschema-restructuredtext
-===========================
+JSON Schema
+===========
 JSON Schema missing a description, provide it using the `description` key in the root of the JSON document.
 
 Type: `object`
@@ -20,59 +20,47 @@ Type: `object`
 
 .. _firstname:
 
-.. rubric:: firstName
+**firstName**
 
 The person's first name.
 
 :Type: `string`
-
 :Required: Optional
-
 :Possible Values: string
-
 
 ----
 
 .. _lastname:
 
-.. rubric:: lastName
+**lastName**
 
 The person's last name.
 
 :Type: `string`
-
 :Required: Optional
-
 :Possible Values: string
-
 
 ----
 
 .. _age:
 
-.. rubric:: age
+**age**
 
 Age in years which must be equal to or greater than zero.
 
 :Type: `integer`
-
 :Required: Optional
-
 :Default: `25`
-
 :Possible Values: `0 <= x <= 150` and multiple of `1`
-
 
 ----
 
 .. _email:
 
-.. rubric:: email
+**email**
 
 Email address of the person.
 
 :Type: `string`
-
 :Required: Optional
-
 :Possible Values: Format: `email`

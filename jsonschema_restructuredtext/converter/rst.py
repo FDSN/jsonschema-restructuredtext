@@ -46,7 +46,7 @@ def _get_schema_header(
 
 def generate(
     schema: dict,
-    title: str = "jsonschema-restructuredtext",
+    title: str = "JSON Schema",
     replace_refs: bool = False,
     suppress_undocumented: bool = False,
     section_punctuation: list = DEFAULT_SECTION_PUNCTUATION,
@@ -92,7 +92,7 @@ def generate(
 
     defs = _schema.get("definitions", _schema.get("$defs", {}))
     rst += _create_definition_table(
-        None, _schema, defs, section_punctuation, section_level=0
+        [], _schema, defs, section_punctuation, section_level=0
     )
 
     if defs:
@@ -111,7 +111,7 @@ def generate(
                 schema_level=1
             )
             rst += _create_definition_table(
-                key, definition, defs, section_punctuation, section_level=0
+                [key], definition, defs, section_punctuation, section_level=0
             )
 
     res = rst.strip(" \n")
@@ -120,7 +120,7 @@ def generate(
     return res
 
 
-def _create_definition_table(ref_key: str, schema: dict, defs: dict,
+def _create_definition_table(json_path: list, schema: dict, defs: dict,
                              section_punctuation, section_level) -> str:
     """
     Create a table of the properties in the schema.
@@ -137,6 +137,8 @@ def _create_definition_table(ref_key: str, schema: dict, defs: dict,
 
     Search for deprecated string in the description or a deprecated key set to true in the property
     """
+
+    indentation = "   " * section_level
 
     logger.debug(f"Creating definition table for schema: {schema}")
 
@@ -169,11 +171,11 @@ def _create_definition_table(ref_key: str, schema: dict, defs: dict,
         logger.debug(f"Processing {property_name} of type {property_type}")
         logger.debug(f"Property details: {property_details}")
 
-        property_type, possible_values = _get_property_details(
+        type_formatted, possible_values = _get_property_details(
             property_type, property_details, defs
         )
 
-        property_type = strip_inside_backticks(property_type)
+        type_formatted = strip_inside_backticks(type_formatted)
         possible_values = strip_inside_backticks(possible_values)
 
         logger.debug(
@@ -189,10 +191,7 @@ def _create_definition_table(ref_key: str, schema: dict, defs: dict,
             required = "Optional"
 
         # Create an item anchor (with context) for referencing from table to item detail
-        if ref_key:
-            item_anchor = dashify(ref_key) + "-" + dashify(property_name)
-        else:
-            item_anchor = dashify(property_name)
+        item_anchor = dashify("-".join(json_path + [property_name]))
 
         # Short description is either title or first sentence of description
         if property_details.get("title"):
@@ -214,7 +213,7 @@ def _create_definition_table(ref_key: str, schema: dict, defs: dict,
 
         item = {
             "property": f":ref:`{property_name} <{item_anchor}>`",
-            "type": f"\"{property_type}\"",
+            "type": f"\"{type_formatted}\"",
             "required": f"\"{required}\"",
             "description": f"\"{short_description}\""
         }
@@ -223,28 +222,49 @@ def _create_definition_table(ref_key: str, schema: dict, defs: dict,
 
         # Generate item detail
         item_detail = f"\n----\n\n.. _{item_anchor}:\n\n"
-        item_detail += f".. rubric:: {property_name}\n\n"
+
+        # Contextual (breadcrumb) header to field details
+        # e.g. "Root > Parent > Field"
+        # The path is italic with the last item in bold
+        item_detail += (indentation +
+                        " > ".join([f":ref:`{item} <{dashify(item)}>`" for item in json_path] +
+                                   [f"**{property_name}**"]) +
+                        "\n\n")
 
         if description:
-            item_detail += f"{description}\n\n"
+            item_detail += indentation + f"{description}\n\n"
 
-        item_detail += f":Type: {property_type}\n\n"
+        item_detail += indentation + f":Type: {type_formatted}\n"
 
-        item_detail += f":Required: {required}\n\n"
+        item_detail += indentation + f":Required: {required}\n"
 
         if property_details.get("deprecated"):
-            item_detail += f":Deprecated: {item['deprecated']}\n\n"
+            item_detail += indentation + f":Deprecated: {item['deprecated']}\n"
 
         if default:
-            item_detail += f":Default: `{json.dumps(default)}`\n\n"
+            item_detail += indentation + f":Default: `{json.dumps(default)}`\n"
 
         if possible_values:
-            item_detail += f":Possible Values: {possible_values}\n\n"
+            item_detail += indentation + f":Possible Values: {possible_values}\n"
 
         if examples:
-            item_detail += f":Examples: {examples}\n\n"
+            item_detail += indentation + f":Examples: {examples}\n"
 
         item_details.append(item_detail)
+
+        # If field type is object or array, add a table of its properties
+        # by recursively calling this function.
+        if property_type in ["object", "array"]:
+            item_details.append(
+                "\n" +
+                _create_definition_table(
+                    json_path + [property_name],
+                    property_details,
+                    defs,
+                    section_punctuation,
+                    section_level + 1
+                )
+            )
 
     # This should not happen, but just in case
     if not table_items:

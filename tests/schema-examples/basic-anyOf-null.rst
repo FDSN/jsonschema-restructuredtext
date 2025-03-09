@@ -1,6 +1,6 @@
 ----
 
-.. _jsonschema-restructuredtext:
+.. _json-schema:
 
 Foo
 ===
@@ -17,10 +17,8 @@ Type: `object`
 
 .. _bar:
 
-.. rubric:: bar
+**bar**
 
 :Type: `string` or `null`
-
 :Required: Required
-
 :Possible Values: string

@@ -30,140 +30,111 @@ Type: `object`
 
 .. _brand:
 
-.. rubric:: brand
+**brand**
 
 The brand of the car.
 
 :Type: `string`
-
 :Required: Required
-
 :Possible Values: Length: `1 <= string <= 100`
-
 :Examples: ``Ford``, ``Toyota``
-
 
 ----
 
 .. _brand-country:
 
-.. rubric:: brand_country
+**brand_country**
 
 [Deprecated] The country where the brand is from.
 
 :Type: `string`
-
 :Required: Required
-
 :Possible Values: `^[A-Z]{2}$ <https://regex101.com/?regex=%5E%5BA-Z%5D%7B2%7D%24>`_
-
 
 ----
 
 .. _model:
 
-.. rubric:: model
+**model**
 
 The model of the car.
 
 :Type: `string`
-
 :Required: Required
-
 :Possible Values: Length: `1 <= string <= 100`
-
 :Examples: ``Focus``, ``Corolla``
-
 
 ----
 
 .. _year:
 
-.. rubric:: year
+**year**
 
 The year of the car.
 
 :Type: `integer`
-
 :Required: Required
-
 :Possible Values: `1900 < x < 2100`
-
 
 ----
 
 .. _car-class:
 
-.. rubric:: car_class
+**car_class**
 
 The class of the car.
 
 :Type: `object`
-
 :Required: Required
-
 :Possible Values: [CarClass](#carclass)
-
 :Examples: ``{'doors': 5, 'passengers': 5, 'type': 'sedan'}``, ``{'doors': 3, 'passengers': 2, 'type': 'hatchback'}``, ``{'doors': 5, 'passengers': 5, 'type': 'suv'}``
-
 
 ----
 
 .. _engine:
 
-.. rubric:: engine
+**engine**
 
 The engine of the car.
 
 :Type: `object`
-
 :Required: Required
-
 :Possible Values: [Engine](#engine)
-
 
 ----
 
 .. _kms:
 
-.. rubric:: kms
+**kms**
 
 The number of kilometers the car has.
 
 :Type: `integer`
-
 :Required: Required
-
 :Possible Values: integer
-
 
 ----
 
 .. _color:
 
-.. rubric:: color
+**color**
 
 The color of the car.
 
 :Type: `string`
-
 :Required: Required
-
 :Possible Values: Length: `1 <= string <= 100`
-
 
 ----
 
 .. _manufacturer-config:
 
-.. rubric:: manufacturer_config
+**manufacturer_config**
 
 The manufacturer's extras.
 
 :Type: `array`
-
 :Required: Required
-
 :Possible Values: [Airbag](#airbag) and/or [NavigationSystem](#navigationsystem) and/or [Upholstery](#upholstery)
 
 
@@ -171,16 +142,13 @@ The manufacturer's extras.
 
 .. _extra-pack:
 
-.. rubric:: extra_pack
+**extra_pack**
 
 The extra pack of the car.
 
 :Type: `object` or `null`
-
 :Required: Required
-
 :Possible Values: [ExtraPackAdvanced](#extrapackadvanced) and/or [ExtraPackBasic](#extrapackbasic)
-
 
 ----
 
@@ -201,16 +169,13 @@ Type: `object`
 
 .. _airbag-type:
 
-.. rubric:: type
+:ref:`Airbag <airbag>` > **type**
 
 The type of airbag.
 
 :Type: `string`
-
 :Required: Required
-
 :Possible Values: `front` `side` `curtain`
-
 
 ----
 
@@ -233,50 +198,39 @@ Type: `object`
 
 .. _carclass-type:
 
-.. rubric:: type
+:ref:`CarClass <carclass>` > **type**
 
 The type of car.
 
 :Type: `string`
-
 :Required: Required
-
 :Possible Values: `sedan` `hatchback` `suv`
-
 
 ----
 
 .. _carclass-doors:
 
-.. rubric:: doors
+:ref:`CarClass <carclass>` > **doors**
 
 The number of doors the car has.
 
 :Type: `integer`
-
 :Required: Required
-
 :Default: `5`
-
 :Possible Values: integer
-
 
 ----
 
 .. _carclass-passengers:
 
-.. rubric:: passengers
+:ref:`CarClass <carclass>` > **passengers**
 
 The number of passengers the car can carry.
 
 :Type: `integer`
-
 :Required: Required
-
 :Default: `5`
-
 :Possible Values: integer
-
 
 ----
 
@@ -305,76 +259,61 @@ Type: `object`
 
 .. _engine-model:
 
-.. rubric:: model
+:ref:`Engine <engine>` > **model**
 
 The name of the engine model.
 
 :Type: `string`
-
 :Required: Required
-
 :Possible Values: Length: `1 <= string <= 100`
-
 
 ----
 
 .. _engine-power:
 
-.. rubric:: power
+:ref:`Engine <engine>` > **power**
 
 The power of the engine in HP.
 
 :Type: `integer`
-
 :Required: Required
-
 :Possible Values: integer
-
 
 ----
 
 .. _engine-fuel-type:
 
-.. rubric:: fuel_type
+:ref:`Engine <engine>` > **fuel_type**
 
 The type of fuel the engine uses.
 
 :Type: `string`
-
 :Required: Required
-
 :Possible Values: `gasoline` `diesel` `electric`
-
 
 ----
 
 .. _engine-turbo:
 
-.. rubric:: turbo
+:ref:`Engine <engine>` > **turbo**
 
 Whether the engine has a turbo or not.
 
 :Type: `boolean`
-
 :Required: Required
-
 :Possible Values: boolean
-
 
 ----
 
 .. _engine-liters:
 
-.. rubric:: liters
+:ref:`Engine <engine>` > **liters**
 
 The displacement of the engine in liters.
 
 :Type: `number`
-
 :Required: Required
-
 :Possible Values: `0.0 < x`
-
 
 ----
 
@@ -398,69 +337,53 @@ Type: `object`
 
 .. _extrapackadvanced-heated-seats:
 
-.. rubric:: heated_seats
+:ref:`ExtraPackAdvanced <extrapackadvanced>` > **heated_seats**
 
 Whether the car has heated seats.
 
 :Type: `boolean`
-
 :Required: Optional
-
 :Default: `true`
-
 :Possible Values: boolean
-
 
 ----
 
 .. _extrapackadvanced-heated-steering-wheel:
 
-.. rubric:: heated_steering_wheel
+:ref:`ExtraPackAdvanced <extrapackadvanced>` > **heated_steering_wheel**
 
 Whether the car has a heated steering wheel.
 
 :Type: `boolean`
-
 :Required: Optional
-
 :Default: `true`
-
 :Possible Values: boolean
-
 
 ----
 
 .. _extrapackadvanced-parking-sensors:
 
-.. rubric:: parking_sensors
+:ref:`ExtraPackAdvanced <extrapackadvanced>` > **parking_sensors**
 
 Whether the car has parking sensors.
 
 :Type: `boolean`
-
 :Required: Optional
-
 :Default: `true`
-
 :Possible Values: boolean
-
 
 ----
 
 .. _extrapackadvanced-adaptive-cruise-control:
 
-.. rubric:: adaptive_cruise_control
+:ref:`ExtraPackAdvanced <extrapackadvanced>` > **adaptive_cruise_control**
 
 Whether the car has adaptive cruise control
 
 :Type: `boolean`
-
 :Required: Optional
-
 :Default: `true`
-
 :Possible Values: boolean
-
 
 ----
 
@@ -483,48 +406,38 @@ Type: `object`
 
 .. _extrapackbasic-heated-seats:
 
-.. rubric:: heated_seats
+:ref:`ExtraPackBasic <extrapackbasic>` > **heated_seats**
 
 Whether the car has heated seats.
 
 :Type: `boolean`
-
 :Required: Optional
-
 :Possible Values: boolean
-
 
 ----
 
 .. _extrapackbasic-heated-steering-wheel:
 
-.. rubric:: heated_steering_wheel
+:ref:`ExtraPackBasic <extrapackbasic>` > **heated_steering_wheel**
 
 Whether the car has a heated steering wheel.
 
 :Type: `boolean`
-
 :Required: Optional
-
 :Possible Values: boolean
-
 
 ----
 
 .. _extrapackbasic-parking-sensors:
 
-.. rubric:: parking_sensors
+:ref:`ExtraPackBasic <extrapackbasic>` > **parking_sensors**
 
 Whether the car has parking sensors.
 
 :Type: `boolean`
-
 :Required: Optional
-
 :Default: `true`
-
 :Possible Values: boolean
-
 
 ----
 
@@ -545,16 +458,13 @@ Type: `object`
 
 .. _navigationsystem-type:
 
-.. rubric:: type
+:ref:`NavigationSystem <navigationsystem>` > **type**
 
 The type of navigation system.
 
 :Type: `string`
-
 :Required: Required
-
 :Possible Values: `gps` `carplay` `androidauto`
-
 
 ----
 
@@ -576,27 +486,22 @@ Type: `object`
 
 .. _upholstery-type:
 
-.. rubric:: type
+:ref:`Upholstery <upholstery>` > **type**
 
 The type of upholstery.
 
 :Type: `string`
-
 :Required: Required
-
 :Possible Values: `leather` `fabric`
-
 
 ----
 
 .. _upholstery-stitching:
 
-.. rubric:: stitching
+:ref:`Upholstery <upholstery>` > **stitching**
 
 Metadata about the stitching.
 
 :Type: `object`
-
 :Required: Required
-
 :Possible Values: object
