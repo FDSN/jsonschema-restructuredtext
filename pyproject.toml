@@ -49,7 +49,7 @@ build-backend = "hatchling.build"
 
 [tool.ruff]
 lint.ignore = ["E501", "B008", "B006"]
-lint.extend-select = ["B", "C4", "PIE", "T20", "SIM", "TCH"]
+lint.extend-select = ["B", "C4", "PIE", "T20", "SIM", "TC"]
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["T201", "PIE804", "SIM115"]
