@@ -185,7 +185,7 @@ def _create_definition_table(json_path: list, schema: dict, defs: dict,
         default = property_details.get("default")
         description = property_details.get("description", "").strip(" \n")
 
-        if schema.get("required"):
+        if property_name in schema.get("required"):
             required = "Required"
         else:
             required = "Optional"
