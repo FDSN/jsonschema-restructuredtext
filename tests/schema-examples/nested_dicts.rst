@@ -1,6 +1,6 @@
 ----
 
-.. _json-schema:
+.. _def-json-schema:
 
 JSON Schema
 ===========
@@ -8,15 +8,15 @@ JSON Schema missing a description, provide it using the `description` key in the
 
 Type: `object`
 
-.. csv-table:: 
+.. csv-table::
    :header: "Property", "Type", "Required", "Description"
 
-   :ref:`Foobar <foobar>`, "`object`", "Required", ""
-   :ref:`Foobaz <foobaz>`, "`array`", "Required", ""
+   ":ref:`Foobar <prop-foobar>`", "`object`", "Required", ""
+   ":ref:`Foobaz <prop-foobaz>`", "`array`", "Required", ""
 
 ----
 
-.. _foobar:
+.. _prop-foobar:
 
 **Foobar**
 
@@ -24,35 +24,35 @@ Type: `object`
 :Required: Required
 :Possible Values: object
 
-.. csv-table:: 
+.. csv-table::
    :header: "Property", "Type", "Required", "Description"
 
-   :ref:`A <foobar-a>`, "`string`", "Optional", ""
-   :ref:`B <foobar-b>`, "`string`", "Optional", ""
+   ":ref:`A <prop-foobar-a>`", "`string`", "Optional", ""
+   ":ref:`B <prop-foobar-b>`", "`string`", "Optional", ""
 
 ----
 
-.. _foobar-a:
+.. _prop-foobar-a:
 
-   :ref:`Foobar <foobar>` > **A**
+:ref:`Foobar <prop-foobar>` > **A**
 
-   :Type: `string`
-   :Required: Optional
-   :Possible Values: string
-
-----
-
-.. _foobar-b:
-
-   :ref:`Foobar <foobar>` > **B**
-
-   :Type: `string`
-   :Required: Optional
-   :Possible Values: string
+:Type: `string`
+:Required: Optional
+:Possible Values: string
 
 ----
 
-.. _foobaz:
+.. _prop-foobar-b:
+
+:ref:`Foobar <prop-foobar>` > **B**
+
+:Type: `string`
+:Required: Optional
+:Possible Values: string
+
+----
+
+.. _prop-foobaz:
 
 **Foobaz**
 

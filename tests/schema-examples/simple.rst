@@ -1,6 +1,6 @@
 ----
 
-.. _json-schema:
+.. _def-json-schema:
 
 Person
 ======
@@ -11,13 +11,13 @@ Type: `object`
 .. csv-table:: Person
    :header: "Property", "Type", "Required", "Description"
 
-   :ref:`firstName <firstname>`, "`string`", "Optional", "The person's first name"
-   :ref:`lastName <lastname>`, "`string`", "Optional", "The person's last name"
-   :ref:`age <age>`, "`integer`", "Optional", "Age in years which must be equal :ref:`More <age>`"
+   ":ref:`firstName <prop-firstname>`", "`string`", "Optional", "The person's first name"
+   ":ref:`lastName <prop-lastname>`", "`string`", "Optional", "The person's last name"
+   ":ref:`age <prop-age>`", "`integer`", "Optional", "Age in years which must be equal :ref:`More <prop-age>`"
 
 ----
 
-.. _firstname:
+.. _prop-firstname:
 
 **firstName**
 
@@ -29,7 +29,7 @@ The person's first name.
 
 ----
 
-.. _lastname:
+.. _prop-lastname:
 
 **lastName**
 
@@ -41,7 +41,7 @@ The person's last name.
 
 ----
 
-.. _age:
+.. _prop-age:
 
 **age**
 

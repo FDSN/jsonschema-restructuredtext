@@ -10,7 +10,7 @@ for file in "$TEST_DIR"/*.json; do
     jsonschema-restructuredtext "$file" > "${file%.json}.rst"
 done
 
-# Generate markdown file for Python example
+# Generate reStructuredText file for Python example
 echo "Generating reStructuredText for Python example"
 python3 "$TEST_DIR"/../model.py | jsonschema-restructuredtext - > "$TEST_DIR/../model.rst"
 

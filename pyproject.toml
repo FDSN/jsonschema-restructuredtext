@@ -1,6 +1,6 @@
 [project]
 name = "jsonschema-restructuredtext"
-version = "0.0.2"
+version = "0.0.3"
 description = "Export a JSON Schema document to restructuredtext documentation."
 requires-python = "~=3.9"
 readme = "README.md"
@@ -20,7 +20,6 @@ dependencies = [
     "click>=8.1.7,<9",
     "loguru>=0.7.2,<0.8",
     "jsonref>=1.1.0,<2",
-    "pyyaml>=6.0.2,<7",
 ]
 
 [project.urls]

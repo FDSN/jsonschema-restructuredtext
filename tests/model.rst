@@ -1,6 +1,6 @@
 ----
 
-.. _json-schema:
+.. _def-json-schema:
 
 Car
 ===
@@ -15,20 +15,20 @@ Type: `object`
 .. csv-table:: Car
    :header: "Property", "Type", "Required", "Description"
 
-   :ref:`brand <brand>`, "`string`", "Required", "Brand"
-   :ref:`brand_country <brand-country>`, "`string`", "Required", "Brand Country"
-   :ref:`model <model>`, "`string`", "Required", "Model"
-   :ref:`year <year>`, "`integer`", "Required", "Year"
-   :ref:`car_class <car-class>`, "`object`", "Required", "The class of the car"
-   :ref:`engine <engine>`, "`object`", "Required", "The engine of the car"
-   :ref:`kms <kms>`, "`integer`", "Required", "Kms"
-   :ref:`color <color>`, "`string`", "Required", "Color"
-   :ref:`manufacturer_config <manufacturer-config>`, "`array`", "Required", "Manufacturer Config"
-   :ref:`extra_pack <extra-pack>`, "`object` or `null`", "Required", "Extra Pack"
+   ":ref:`brand <prop-brand>`", "`string`", "Required", "Brand"
+   ":ref:`model <prop-model>`", "`string`", "Required", "Model"
+   ":ref:`year <prop-year>`", "`integer`", "Required", "Year"
+   ":ref:`car_class <prop-car-class>`", "`object`", "Required", "The class of the car"
+   ":ref:`engine <prop-engine>`", "`object`", "Required", "The engine of the car"
+   ":ref:`color <prop-color>`", "`string`", "Required", "Color"
+   ":ref:`kms <prop-kms>`", "`integer`", "Optional", "Kms"
+   ":ref:`manufacturer_config <prop-manufacturer-config>`", "`array`", "Optional", "Manufacturer Config"
+   ":ref:`extra_pack <prop-extra-pack>`", "`object` or `null`", "Optional", "Extra Pack"
+   ":ref:`brand_country <prop-brand-country>`", "`string`", "Required", "Brand Country"
 
 ----
 
-.. _brand:
+.. _prop-brand:
 
 **brand**
 
@@ -37,23 +37,11 @@ The brand of the car.
 :Type: `string`
 :Required: Required
 :Possible Values: Length: `1 <= string <= 100`
-:Examples: ``Ford``, ``Toyota``
+:Examples: ``"Ford"``, ``"Toyota"``
 
 ----
 
-.. _brand-country:
-
-**brand_country**
-
-[Deprecated] The country where the brand is from.
-
-:Type: `string`
-:Required: Required
-:Possible Values: `^[A-Z]{2}$ <https://regex101.com/?regex=%5E%5BA-Z%5D%7B2%7D%24>`_
-
-----
-
-.. _model:
+.. _prop-model:
 
 **model**
 
@@ -62,11 +50,11 @@ The model of the car.
 :Type: `string`
 :Required: Required
 :Possible Values: Length: `1 <= string <= 100`
-:Examples: ``Focus``, ``Corolla``
+:Examples: ``"Focus"``, ``"Corolla"``
 
 ----
 
-.. _year:
+.. _prop-year:
 
 **year**
 
@@ -78,7 +66,7 @@ The year of the car.
 
 ----
 
-.. _car-class:
+.. _prop-car-class:
 
 **car_class**
 
@@ -86,12 +74,12 @@ The class of the car.
 
 :Type: `object`
 :Required: Required
-:Possible Values: [CarClass](#carclass)
-:Examples: ``{'doors': 5, 'passengers': 5, 'type': 'sedan'}``, ``{'doors': 3, 'passengers': 2, 'type': 'hatchback'}``, ``{'doors': 5, 'passengers': 5, 'type': 'suv'}``
+:Possible Values: :ref:`CarClass <def-carclass>`
+:Examples: ``{"doors": 5, "passengers": 5, "type": "sedan"}``, ``{"doors": 3, "passengers": 2, "type": "hatchback"}``, ``{"doors": 5, "passengers": 5, "type": "suv"}``
 
 ----
 
-.. _engine:
+.. _prop-engine:
 
 **engine**
 
@@ -99,23 +87,11 @@ The engine of the car.
 
 :Type: `object`
 :Required: Required
-:Possible Values: [Engine](#engine)
+:Possible Values: :ref:`Engine <def-engine>`
 
 ----
 
-.. _kms:
-
-**kms**
-
-The number of kilometers the car has.
-
-:Type: `integer`
-:Required: Required
-:Possible Values: integer
-
-----
-
-.. _color:
+.. _prop-color:
 
 **color**
 
@@ -127,32 +103,56 @@ The color of the car.
 
 ----
 
-.. _manufacturer-config:
+.. _prop-kms:
+
+**kms**
+
+The number of kilometers the car has.
+
+:Type: `integer`
+:Required: Optional
+:Possible Values: integer
+
+----
+
+.. _prop-manufacturer-config:
 
 **manufacturer_config**
 
 The manufacturer's extras.
 
 :Type: `array`
-:Required: Required
-:Possible Values: [Airbag](#airbag) and/or [NavigationSystem](#navigationsystem) and/or [Upholstery](#upholstery)
-
+:Required: Optional
+:Default: `[]`
+:Possible Values: :ref:`Airbag <def-airbag>` and/or :ref:`NavigationSystem <def-navigationsystem>` and/or :ref:`Upholstery <def-upholstery>`
 
 ----
 
-.. _extra-pack:
+.. _prop-extra-pack:
 
 **extra_pack**
 
 The extra pack of the car.
 
 :Type: `object` or `null`
-:Required: Required
-:Possible Values: [ExtraPackAdvanced](#extrapackadvanced) and/or [ExtraPackBasic](#extrapackbasic)
+:Required: Optional
+:Possible Values: :ref:`ExtraPackAdvanced <def-extrapackadvanced>` and/or :ref:`ExtraPackBasic <def-extrapackbasic>`
 
 ----
 
-.. _airbag:
+.. _prop-brand-country:
+
+**brand_country**
+
+[Deprecated] The country where the brand is from.
+
+:Type: `string`
+:Required: Required
+:Possible Values: `^[A-Z]{2}$ <https://regex101.com/?regex=%5E%5BA-Z%5D%7B2%7D%24>`_
+
+----
+
+.. _def-airbag:
 
 Airbag
 ------
@@ -163,13 +163,13 @@ Type: `object`
 .. csv-table:: Airbag
    :header: "Property", "Type", "Required", "Description"
 
-   :ref:`type <airbag-type>`, "`string`", "Required", "Type"
+   ":ref:`type <prop-airbag-type>`", "`string`", "Required", "Type"
 
 ----
 
-.. _airbag-type:
+.. _prop-airbag-type:
 
-:ref:`Airbag <airbag>` > **type**
+:ref:`Airbag <def-airbag>` > **type**
 
 The type of airbag.
 
@@ -179,7 +179,7 @@ The type of airbag.
 
 ----
 
-.. _carclass:
+.. _def-carclass:
 
 Class
 -----
@@ -190,15 +190,15 @@ Type: `object`
 .. csv-table:: Class
    :header: "Property", "Type", "Required", "Description"
 
-   :ref:`type <carclass-type>`, "`string`", "Required", "Type"
-   :ref:`doors <carclass-doors>`, "`integer`", "Required", "Doors"
-   :ref:`passengers <carclass-passengers>`, "`integer`", "Required", "Passengers"
+   ":ref:`type <prop-carclass-type>`", "`string`", "Required", "Type"
+   ":ref:`doors <prop-carclass-doors>`", "`integer`", "Optional", "Doors"
+   ":ref:`passengers <prop-carclass-passengers>`", "`integer`", "Optional", "Passengers"
 
 ----
 
-.. _carclass-type:
+.. _prop-carclass-type:
 
-:ref:`CarClass <carclass>` > **type**
+:ref:`CarClass <def-carclass>` > **type**
 
 The type of car.
 
@@ -208,33 +208,33 @@ The type of car.
 
 ----
 
-.. _carclass-doors:
+.. _prop-carclass-doors:
 
-:ref:`CarClass <carclass>` > **doors**
+:ref:`CarClass <def-carclass>` > **doors**
 
 The number of doors the car has.
 
 :Type: `integer`
-:Required: Required
+:Required: Optional
 :Default: `5`
 :Possible Values: integer
 
 ----
 
-.. _carclass-passengers:
+.. _prop-carclass-passengers:
 
-:ref:`CarClass <carclass>` > **passengers**
+:ref:`CarClass <def-carclass>` > **passengers**
 
 The number of passengers the car can carry.
 
 :Type: `integer`
-:Required: Required
+:Required: Optional
 :Default: `5`
 :Possible Values: integer
 
 ----
 
-.. _engine:
+.. _def-engine:
 
 Engine
 ------
@@ -249,17 +249,17 @@ Type: `object`
 .. csv-table:: Engine
    :header: "Property", "Type", "Required", "Description"
 
-   :ref:`model <engine-model>`, "`string`", "Required", "Model"
-   :ref:`power <engine-power>`, "`integer`", "Required", "Power"
-   :ref:`fuel_type <engine-fuel-type>`, "`string`", "Required", "Fuel Type"
-   :ref:`turbo <engine-turbo>`, "`boolean`", "Required", "Turbo"
-   :ref:`liters <engine-liters>`, "`number`", "Required", "Liters"
+   ":ref:`model <prop-engine-model>`", "`string`", "Required", "Model"
+   ":ref:`power <prop-engine-power>`", "`integer`", "Required", "Power"
+   ":ref:`fuel_type <prop-engine-fuel-type>`", "`string`", "Required", "Fuel Type"
+   ":ref:`liters <prop-engine-liters>`", "`number`", "Required", "Liters"
+   ":ref:`turbo <prop-engine-turbo>`", "`boolean`", "Optional", "Turbo"
 
 ----
 
-.. _engine-model:
+.. _prop-engine-model:
 
-:ref:`Engine <engine>` > **model**
+:ref:`Engine <def-engine>` > **model**
 
 The name of the engine model.
 
@@ -269,9 +269,9 @@ The name of the engine model.
 
 ----
 
-.. _engine-power:
+.. _prop-engine-power:
 
-:ref:`Engine <engine>` > **power**
+:ref:`Engine <def-engine>` > **power**
 
 The power of the engine in HP.
 
@@ -281,9 +281,9 @@ The power of the engine in HP.
 
 ----
 
-.. _engine-fuel-type:
+.. _prop-engine-fuel-type:
 
-:ref:`Engine <engine>` > **fuel_type**
+:ref:`Engine <def-engine>` > **fuel_type**
 
 The type of fuel the engine uses.
 
@@ -293,31 +293,32 @@ The type of fuel the engine uses.
 
 ----
 
-.. _engine-turbo:
+.. _prop-engine-liters:
 
-:ref:`Engine <engine>` > **turbo**
-
-Whether the engine has a turbo or not.
-
-:Type: `boolean`
-:Required: Required
-:Possible Values: boolean
-
-----
-
-.. _engine-liters:
-
-:ref:`Engine <engine>` > **liters**
+:ref:`Engine <def-engine>` > **liters**
 
 The displacement of the engine in liters.
 
 :Type: `number`
 :Required: Required
-:Possible Values: `0.0 < x`
+:Possible Values: `0 < x`
 
 ----
 
-.. _extrapackadvanced:
+.. _prop-engine-turbo:
+
+:ref:`Engine <def-engine>` > **turbo**
+
+Whether the engine has a turbo or not.
+
+:Type: `boolean`
+:Required: Optional
+:Default: `false`
+:Possible Values: boolean
+
+----
+
+.. _def-extrapackadvanced:
 
 ExtraPackAdvanced
 -----------------
@@ -328,16 +329,16 @@ Type: `object`
 .. csv-table:: ExtraPackAdvanced
    :header: "Property", "Type", "Required", "Description"
 
-   :ref:`heated_seats <extrapackadvanced-heated-seats>`, "`boolean`", "Optional", "Heated Seats"
-   :ref:`heated_steering_wheel <extrapackadvanced-heated-steering-wheel>`, "`boolean`", "Optional", "Heated Steering Wheel"
-   :ref:`parking_sensors <extrapackadvanced-parking-sensors>`, "`boolean`", "Optional", "Parking Sensors"
-   :ref:`adaptive_cruise_control <extrapackadvanced-adaptive-cruise-control>`, "`boolean`", "Optional", "Adaptive Cruise Control"
+   ":ref:`heated_seats <prop-extrapackadvanced-heated-seats>`", "`boolean`", "Optional", "Heated Seats"
+   ":ref:`heated_steering_wheel <prop-extrapackadvanced-heated-steering-wheel>`", "`boolean`", "Optional", "Heated Steering Wheel"
+   ":ref:`parking_sensors <prop-extrapackadvanced-parking-sensors>`", "`boolean`", "Optional", "Parking Sensors"
+   ":ref:`adaptive_cruise_control <prop-extrapackadvanced-adaptive-cruise-control>`", "`boolean`", "Optional", "Adaptive Cruise Control"
 
 ----
 
-.. _extrapackadvanced-heated-seats:
+.. _prop-extrapackadvanced-heated-seats:
 
-:ref:`ExtraPackAdvanced <extrapackadvanced>` > **heated_seats**
+:ref:`ExtraPackAdvanced <def-extrapackadvanced>` > **heated_seats**
 
 Whether the car has heated seats.
 
@@ -348,9 +349,9 @@ Whether the car has heated seats.
 
 ----
 
-.. _extrapackadvanced-heated-steering-wheel:
+.. _prop-extrapackadvanced-heated-steering-wheel:
 
-:ref:`ExtraPackAdvanced <extrapackadvanced>` > **heated_steering_wheel**
+:ref:`ExtraPackAdvanced <def-extrapackadvanced>` > **heated_steering_wheel**
 
 Whether the car has a heated steering wheel.
 
@@ -361,9 +362,9 @@ Whether the car has a heated steering wheel.
 
 ----
 
-.. _extrapackadvanced-parking-sensors:
+.. _prop-extrapackadvanced-parking-sensors:
 
-:ref:`ExtraPackAdvanced <extrapackadvanced>` > **parking_sensors**
+:ref:`ExtraPackAdvanced <def-extrapackadvanced>` > **parking_sensors**
 
 Whether the car has parking sensors.
 
@@ -374,9 +375,9 @@ Whether the car has parking sensors.
 
 ----
 
-.. _extrapackadvanced-adaptive-cruise-control:
+.. _prop-extrapackadvanced-adaptive-cruise-control:
 
-:ref:`ExtraPackAdvanced <extrapackadvanced>` > **adaptive_cruise_control**
+:ref:`ExtraPackAdvanced <def-extrapackadvanced>` > **adaptive_cruise_control**
 
 Whether the car has adaptive cruise control
 
@@ -387,7 +388,7 @@ Whether the car has adaptive cruise control
 
 ----
 
-.. _extrapackbasic:
+.. _def-extrapackbasic:
 
 ExtraPackBasic
 --------------
@@ -398,39 +399,41 @@ Type: `object`
 .. csv-table:: ExtraPackBasic
    :header: "Property", "Type", "Required", "Description"
 
-   :ref:`heated_seats <extrapackbasic-heated-seats>`, "`boolean`", "Optional", "Heated Seats"
-   :ref:`heated_steering_wheel <extrapackbasic-heated-steering-wheel>`, "`boolean`", "Optional", "Heated Steering Wheel"
-   :ref:`parking_sensors <extrapackbasic-parking-sensors>`, "`boolean`", "Optional", "Parking Sensors"
+   ":ref:`heated_seats <prop-extrapackbasic-heated-seats>`", "`boolean`", "Optional", "Heated Seats"
+   ":ref:`heated_steering_wheel <prop-extrapackbasic-heated-steering-wheel>`", "`boolean`", "Optional", "Heated Steering Wheel"
+   ":ref:`parking_sensors <prop-extrapackbasic-parking-sensors>`", "`boolean`", "Optional", "Parking Sensors"
 
 ----
 
-.. _extrapackbasic-heated-seats:
+.. _prop-extrapackbasic-heated-seats:
 
-:ref:`ExtraPackBasic <extrapackbasic>` > **heated_seats**
+:ref:`ExtraPackBasic <def-extrapackbasic>` > **heated_seats**
 
 Whether the car has heated seats.
 
 :Type: `boolean`
 :Required: Optional
+:Default: `false`
 :Possible Values: boolean
 
 ----
 
-.. _extrapackbasic-heated-steering-wheel:
+.. _prop-extrapackbasic-heated-steering-wheel:
 
-:ref:`ExtraPackBasic <extrapackbasic>` > **heated_steering_wheel**
+:ref:`ExtraPackBasic <def-extrapackbasic>` > **heated_steering_wheel**
 
 Whether the car has a heated steering wheel.
 
 :Type: `boolean`
 :Required: Optional
+:Default: `false`
 :Possible Values: boolean
 
 ----
 
-.. _extrapackbasic-parking-sensors:
+.. _prop-extrapackbasic-parking-sensors:
 
-:ref:`ExtraPackBasic <extrapackbasic>` > **parking_sensors**
+:ref:`ExtraPackBasic <def-extrapackbasic>` > **parking_sensors**
 
 Whether the car has parking sensors.
 
@@ -441,7 +444,7 @@ Whether the car has parking sensors.
 
 ----
 
-.. _navigationsystem:
+.. _def-navigationsystem:
 
 NavigationSystem
 ----------------
@@ -452,13 +455,13 @@ Type: `object`
 .. csv-table:: NavigationSystem
    :header: "Property", "Type", "Required", "Description"
 
-   :ref:`type <navigationsystem-type>`, "`string`", "Required", "Type"
+   ":ref:`type <prop-navigationsystem-type>`", "`string`", "Required", "Type"
 
 ----
 
-.. _navigationsystem-type:
+.. _prop-navigationsystem-type:
 
-:ref:`NavigationSystem <navigationsystem>` > **type**
+:ref:`NavigationSystem <def-navigationsystem>` > **type**
 
 The type of navigation system.
 
@@ -468,7 +471,7 @@ The type of navigation system.
 
 ----
 
-.. _upholstery:
+.. _def-upholstery:
 
 Upholstery
 ----------
@@ -479,14 +482,14 @@ Type: `object`
 .. csv-table:: Upholstery
    :header: "Property", "Type", "Required", "Description"
 
-   :ref:`type <upholstery-type>`, "`string`", "Required", "Type"
-   :ref:`stitching <upholstery-stitching>`, "`object`", "Required", "Stitching"
+   ":ref:`type <prop-upholstery-type>`", "`string`", "Required", "Type"
+   ":ref:`stitching <prop-upholstery-stitching>`", "`object`", "Optional", "Stitching"
 
 ----
 
-.. _upholstery-type:
+.. _prop-upholstery-type:
 
-:ref:`Upholstery <upholstery>` > **type**
+:ref:`Upholstery <def-upholstery>` > **type**
 
 The type of upholstery.
 
@@ -496,12 +499,13 @@ The type of upholstery.
 
 ----
 
-.. _upholstery-stitching:
+.. _prop-upholstery-stitching:
 
-:ref:`Upholstery <upholstery>` > **stitching**
+:ref:`Upholstery <def-upholstery>` > **stitching**
 
 Metadata about the stitching.
 
 :Type: `object`
-:Required: Required
+:Required: Optional
+:Default: `{}`
 :Possible Values: object

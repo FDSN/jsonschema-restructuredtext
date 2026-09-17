@@ -11,3 +11,12 @@ def test_generate():
 
     assert output == expected_output
 
+
+def test_generate_custom_title():
+    schema = Car.model_json_schema()
+    output = generate(schema, title="Car (custom title)")
+
+    with open("tests/model_custom-title.rst", "r") as f:
+        expected_output = f.read()
+
+    assert output == expected_output

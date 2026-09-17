@@ -7,8 +7,8 @@ repos:
       - id: ruff-format
   - repo: local
     hooks:
-      - id: generate-test-markdown
-        name: Generate test markdown from schema examples
+      - id: generate-test-rst
+        name: Generate test reStructuredText from schema examples
         entry: scripts/generate-tests.sh
         language: script
         pass_filenames: false

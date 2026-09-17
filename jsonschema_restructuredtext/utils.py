@@ -1,5 +1,6 @@
 import re
 
+
 def create_section(punc: str, anchor: str, header: str) -> str:
     """
     Create rst section header.
@@ -11,6 +12,7 @@ def create_section(punc: str, anchor: str, header: str) -> str:
     output += punc * len(header) + "\n"
 
     return output
+
 
 def create_enum(schema: dict) -> str:
     """
@@ -49,22 +51,31 @@ def sort_properties(schema: dict) -> dict:
     properties = dict(
         sorted(
             properties.items(),
-            key=lambda item: "[deprecated]"
-            in str(item[1].get("description", "")).lower()
-            or item[1].get("deprecated", False),
+            key=lambda item: (
+                "[deprecated]" in str(item[1].get("description", "")).lower()
+                or item[1].get("deprecated", False)
+            ),
         )
     )
 
     return properties
 
+
 def strip_inside_backticks(text):
     """
     Remove leading and trailing spaces inside backticks.
+
+    Passes non-string input through unchanged; every caller is expected to
+    supply a formatted string, but this keeps a formatting miss elsewhere
+    from turning into a crash here.
     """
-    return re.sub(r'`(.*?)`', lambda match: f"`{match.group(1).strip()}`", text)
+    if not isinstance(text, str):
+        return text
+    return re.sub(r"`(.*?)`", lambda match: f"`{match.group(1).strip()}`", text)
+
 
 def dashify(text):
     """
     Replace spaces and underscores with dashes and make lowercase.
     """
-    return re.sub(r'[_ ]', '-', text).lower()
+    return re.sub(r"[_ ]", "-", text).lower()

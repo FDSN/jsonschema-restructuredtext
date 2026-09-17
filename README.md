@@ -34,12 +34,12 @@ Options:
   --resolve / --no-resolve        [Experimental] Resolve $ref pointers.
                                   [default: no-resolve]
   --suppress-undocumented / --no-suppress-undocumented
-                                  Suppress output of properties that do not
+                                  Suppress output of definitions that do not
                                   have title, description, or examples.
                                   [default: no-suppress-undocumented]
   --section-punctuation TEXT      Provide a comma-separated list of
                                   punctuation values to use for sections.
-                                  [default: =, -, ^, ~, +, *, +, .]
+                                  [default: =, -, ^, ~, +, *, #, .]
   --debug / --no-debug            Enable debug output.  [default: no-debug]
   --version                       Show the version and exit.
   --help                          Show this message and exit.
@@ -73,13 +73,13 @@ this project does not currently support all features, but it should support:
   - Default values
   - Descriptions and titles
   - Nested objects using `$defs` or `definitions`
-  - Nested objects with dot notation (e.g., `parent.child[].property`)
+  - Nested objects and arrays get their own sub-table, with breadcrumbs showing the path back to the root (arrays of objects are not yet expanded this way)
   - Basic `oneOf`, `anyOf`, `allOf` functionality
   - Arrays
   - Integers with minimum, maximum values and exclusives
   - Boolean values
   - Deprecated fields (using the `deprecated` option, additionally searches for case-insensitive `deprecated` in the field description)
-  - Supports optional YAML and JSON formatting for examples
+  - Examples formatted as JSON
 
 ## Caveats
   - Custom definitions are expected to be in the same file as the schema that uses them,
@@ -129,11 +129,13 @@ Given the following JSON Schema:
 ```
 
 ### Example 1 Output
-The following reStructuredText will be generated:
+Running `jsonschema-restructuredtext --title "Example JSON Schema" movie-schema.json`
+generates the following reStructuredText:
 
 ```
 ----
-.. _example-json-schema:
+
+.. _def-example-json-schema:
 
 Example JSON Schema
 ===================
@@ -144,71 +146,71 @@ Type: `object`
 .. csv-table::
    :header: "Property", "Type", "Required", "Description"
 
-   :ref:`title <title>`, "`string`", "Required", ""
-   :ref:`director <director>`, "`string`", "Required", ""
-   :ref:`releaseDate <releasedate>`, "`string`", "Required", ""
-   :ref:`genre <genre>`, "`string`", "Required", ""
-   :ref:`duration <duration>`, "`string`", "Required", ""
-   :ref:`cast <cast>`, "`array`", "Required", ""
+   ":ref:`title <prop-title>`", "`string`", "Required", ""
+   ":ref:`director <prop-director>`", "`string`", "Required", ""
+   ":ref:`releaseDate <prop-releasedate>`", "`string`", "Required", ""
+   ":ref:`genre <prop-genre>`", "`string`", "Optional", ""
+   ":ref:`duration <prop-duration>`", "`string`", "Optional", ""
+   ":ref:`cast <prop-cast>`", "`array`", "Optional", ""
 
 ----
 
-.. _title:
+.. _prop-title:
 
 **title**
 
-:Type: string
+:Type: `string`
 :Required: Required
 :Possible Values: string
 
 ----
 
-.. _director:
+.. _prop-director:
 
 **director**
 
-:Type: string
+:Type: `string`
 :Required: Required
 :Possible Values: string
 
 ----
 
-.. _releasedate:
+.. _prop-releasedate:
 
 **releaseDate**
 
-:Type: string
+:Type: `string`
 :Required: Required
 :Possible Values: Format: `date`
 
 ----
 
-.. _genre:
+.. _prop-genre:
 
 **genre**
 
-:Type: string
-:Required: Required
+:Type: `string`
+:Required: Optional
 :Possible Values: `Action` `Comedy` `Drama` `Science Fiction`
 
 ----
 
-.. _duration:
+.. _prop-duration:
 
 **duration**
 
-:Type: string
-:Required: Required
+:Type: `string`
+:Required: Optional
 :Possible Values: string
 
 ----
 
-.. _cast:
+.. _prop-cast:
 
 **cast**
 
-:Type: array
-:Required: Required
+:Type: `array`
+:Required: Optional
 :Possible Values: string
 ```
 

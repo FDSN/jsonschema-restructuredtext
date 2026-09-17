@@ -1,6 +1,6 @@
 ----
 
-.. _json-schema:
+.. _def-json-schema:
 
 Component
 =========
@@ -11,12 +11,12 @@ Type: `object`
 .. csv-table:: Component
    :header: "Property", "Type", "Required", "Description"
 
-   :ref:`type <type>`, "`string`", "Optional", "Type"
-   :ref:`ingress_cidr_blocks <ingress-cidr-blocks>`, "`array`", "Optional", "Ingress Cidr Blocks"
+   ":ref:`type <prop-type>`", "`string`", "Optional", "Type"
+   ":ref:`ingress_cidr_blocks <prop-ingress-cidr-blocks>`", "`array`", "Optional", "Ingress Cidr Blocks"
 
 ----
 
-.. _type:
+.. _prop-type:
 
 **type**
 
@@ -27,7 +27,7 @@ Type: `object`
 
 ----
 
-.. _ingress-cidr-blocks:
+.. _prop-ingress-cidr-blocks:
 
 **ingress_cidr_blocks**
 
@@ -35,4 +35,5 @@ A list of CIDR blocks allowed to connect.
 
 :Type: `array`
 :Required: Optional
+:Default: `[]`
 :Possible Values: Any type

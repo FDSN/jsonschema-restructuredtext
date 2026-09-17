@@ -1,8 +1,15 @@
 import json
+import string
 
 import click
 
 import jsonschema_restructuredtext
+from jsonschema_restructuredtext import constants
+
+# RST section underlines/overlines must be built from a single punctuation
+# character; this is the full set docutils accepts.
+_RST_SECTION_PUNCTUATION = set(string.punctuation)
+
 
 def parse_comma_separated(ctx, param, value):
     if not value:
@@ -11,8 +18,22 @@ def parse_comma_separated(ctx, param, value):
     # Since 'multiple=True', the input will be a tuple; combine all inputs into a single string
     combined = ",".join(value)
 
-    # Split on commas to create a list
-    return [item.strip() for item in combined.split(",")]
+    # Split on commas to create a list, dropping blank entries (e.g. from a
+    # trailing comma, or an empty string passed outright)
+    result = [item.strip() for item in combined.split(",") if item.strip()]
+
+    if not result:
+        raise click.BadParameter("must provide at least one punctuation character.")
+
+    for item in result:
+        if len(item) != 1 or item not in _RST_SECTION_PUNCTUATION:
+            raise click.BadParameter(
+                f"{item!r} is not a single reStructuredText section punctuation "
+                f"character; choose from: {''.join(sorted(_RST_SECTION_PUNCTUATION))}"
+            )
+
+    return result
+
 
 @click.command()
 @click.argument("filename", type=click.File("r"))
@@ -34,12 +55,12 @@ def parse_comma_separated(ctx, param, value):
     is_flag=True,
     default=False,
     show_default=True,
-    help="Suppress output of properties that do not have title, description, or examples.",
+    help="Suppress output of definitions that do not have title, description, or examples.",
 )
 @click.option(
     "--section-punctuation",
     multiple=True,
-    default=jsonschema_restructuredtext.constants.DEFAULT_SECTION_PUNCTUATION,
+    default=constants.DEFAULT_SECTION_PUNCTUATION,
     show_default=True,
     callback=parse_comma_separated,
     help="Provide a comma-separated list of punctuation values to use for sections.",

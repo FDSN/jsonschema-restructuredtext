@@ -8,6 +8,7 @@ jobs:
     strategy:
       matrix:
         python-version:
+          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
@@ -32,9 +33,9 @@ jobs:
         run: uv run ruff check --output-format=github .
       - name: Test with pytest
         run: |
-          pytest -v --doctest-modules \
+          uv run pytest -v --doctest-modules \
             --junitxml=junit/test-results-${{ matrix.python-version }}.xml \
-            --cov=jsonschema_markdown \
+            --cov=jsonschema_restructuredtext \
             --cov-report=term \
             --cov-report=xml:coverage/coverage-${{ matrix.python-version }}.xml \
             --cov-report=html:coverage/coverage-${{ matrix.python-version }}.html

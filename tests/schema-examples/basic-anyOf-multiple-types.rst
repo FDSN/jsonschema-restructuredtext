@@ -1,6 +1,6 @@
 ----
 
-.. _json-schema:
+.. _def-json-schema:
 
 Foo
 ===
@@ -11,11 +11,11 @@ Type: `object`
 .. csv-table:: Foo
    :header: "Property", "Type", "Required", "Description"
 
-   :ref:`bar <bar>`, "`integer` or `string`", "Required", "Bar"
+   ":ref:`bar <prop-bar>`", "`integer` or `string`", "Required", "Bar"
 
 ----
 
-.. _bar:
+.. _prop-bar:
 
 **bar**
 
