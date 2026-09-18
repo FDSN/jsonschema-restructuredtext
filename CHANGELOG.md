@@ -29,9 +29,12 @@
 - Fix `--section-punctuation ""` silently emitting a section header with no underline
 - Reject a `--section-punctuation` value that is not a single, valid RST punctuation character
 - Fix a duplicate punctuation character in the default section punctuation list
-- Recurse into nested tables for a property whose `type` is a list including `object`/`array`, not just a bare `object`/`array`
-- Strip the trailing space `csv-table` directives left when a schema/property had no title, which fought the `trailing-whitespace` pre-commit hook and never converged
+- Recurse into nested tables for a property whose `type` is a list including `object`/`array`,
+  not just a bare `object`/`array`
+- Strip the trailing space `csv-table` directives left when a schema/property had no title,
+  which fought the `trailing-whitespace` pre-commit hook and never converged
 - Correct the `--suppress-undocumented` help text: it suppresses definitions, not properties
+
 ## 0.0.2
 
 - Allow recursion into objects and arrays with sub-tables, adding breadcrumbs for nesting
