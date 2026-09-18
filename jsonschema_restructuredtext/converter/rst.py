@@ -2,6 +2,7 @@ import contextlib
 import json
 import sys
 import urllib.parse
+from typing import Optional
 
 from loguru import logger
 
@@ -11,6 +12,8 @@ from jsonschema_restructuredtext.utils import (
     create_enum,
     create_section,
     dashify,
+    format_literal,
+    format_literal_list,
     sort_properties,
     strip_inside_backticks,
 )
@@ -26,6 +29,19 @@ def _format_type(property_type) -> str:
     if isinstance(property_type, list):
         return " or ".join(str(t) for t in property_type)
     return str(property_type)
+
+
+def _enum_as_type(schema: dict) -> Optional[str]:
+    """
+    A schema that lists an `enum` but declares no `type` of its own is still
+    typed in a useful sense: the enum is the constraint. Report it as `enum`,
+    the way `const` is reported, rather than as "unspecified".
+
+    Returns None when the schema declares a `type` (which wins) or has no `enum`.
+    """
+    if schema.get("type") is None and "enum" in schema:
+        return "enum"
+    return None
 
 
 def _is_object_or_array(property_type) -> bool:
@@ -83,7 +99,7 @@ def _get_schema_header(
     rst += description
     rst += "\n\n"
 
-    schema_type = _format_type(schema.get("type", "object(?)"))
+    schema_type = _enum_as_type(schema) or _format_type(schema.get("type", "object(?)"))
     rst += f"Type: `{schema_type}`\n\n"
 
     return rst
@@ -318,7 +334,7 @@ def _create_definition_table(
             item_detail += f":Deprecated: {property_details['deprecated']}\n"
 
         if default is not None:
-            item_detail += f":Default: `{json.dumps(default)}`\n"
+            item_detail += f":Default: {format_literal(default)}\n"
 
         if possible_values:
             item_detail += f":Possible Values: {possible_values}\n"
@@ -369,7 +385,7 @@ def _get_property_ref(ref, defs):
     # JSON pointer tokens are percent-decoded, then have ~1/~0 unescaped to / and ~.
     ref = urllib.parse.unquote(ref.split("/")[-1]).replace("~1", "/").replace("~0", "~")
     if ref in defs:
-        t = defs[ref].get("type")
+        t = defs[ref].get("type") or _enum_as_type(defs[ref])
         return (
             f"`{t}`" if t else "Missing type",
             f":ref:`{ref} <{_definition_anchor(ref)}>`",
@@ -498,8 +514,8 @@ def _get_property_details(
 
     if "enum" in property_details:
         return (
-            f"`{_format_type(property_type)}`",
-            " ".join([f"`{str(value)}`" for value in property_details["enum"]]),
+            f"`{_enum_as_type(property_details) or _format_type(property_type)}`",
+            format_literal_list(property_details["enum"]),
         )
 
     # Handle array-like properties
@@ -539,7 +555,7 @@ def _get_property_details(
         return f"`{_format_type(property_type)}`", res_details
 
     elif "const" in property_details:
-        res_details = f"`{property_details.get('const')}`"
+        res_details = format_literal(property_details["const"])
         return "`const`", res_details
 
     elif property_type in ["integer", "number"]:

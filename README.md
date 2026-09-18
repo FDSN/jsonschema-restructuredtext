@@ -85,6 +85,27 @@ this project does not currently support all features, but it should support:
   - Custom definitions are expected to be in the same file as the schema that uses them,
     in the `definitions` or `$defs` parameter at the root of the document.
 
+## Development
+
+Create a virtual environment and install the project editable, along with its dev
+dependencies (the `dev` group defined in `pyproject.toml`):
+
+```bash
+python3 -m venv venv
+venv/bin/python -m pip install -e . --group dev
+```
+
+`--group dev` requires `pip>=25.1`; on an older `pip`, upgrade first with
+`venv/bin/python -m pip install --upgrade pip`.
+
+Activate the virtual environment, then run the tests and linter:
+
+```bash
+source venv/bin/activate
+pytest
+ruff check .
+```
+
 ---
 
 ## Examples
@@ -191,7 +212,7 @@ Type: `object`
 
 :Type: `string`
 :Required: Optional
-:Possible Values: `Action` `Comedy` `Drama` `Science Fiction`
+:Possible Values: ``"Action"``, ``"Comedy"``, ``"Drama"``, ``"Science Fiction"``
 
 ----
 

@@ -1,3 +1,4 @@
+import json
 import re
 
 
@@ -14,15 +15,27 @@ def create_section(punc: str, anchor: str, header: str) -> str:
     return output
 
 
+def format_literal(value) -> str:
+    """
+    Render a JSON value as an RST inline literal: strings keep their quotes,
+    numbers, booleans and null are bare, and all of them render as monospace.
+    """
+    return f"``{json.dumps(value)}``"
+
+
+def format_literal_list(values) -> str:
+    """
+    Render a list of JSON values as comma-separated RST inline literals.
+    """
+    return ", ".join(format_literal(value) for value in values)
+
+
 def create_enum(schema: dict) -> str:
     """
     Create markdown/rst for enum values.
     """
 
-    output = "**Possible Values:** "
-    output += " or ".join([f"`{value}`" for value in schema["enum"]]) + "\n\n"
-
-    return output
+    return f"**Possible Values:** {format_literal_list(schema['enum'])}\n\n"
 
 
 def create_const(schema: dict) -> str:
@@ -30,7 +43,7 @@ def create_const(schema: dict) -> str:
     Create markdown/rst value for const values.
     """
 
-    return f"**Possible Values:** {schema.get('const', '?')}\n\n"
+    return f"**Possible Values:** {format_literal(schema['const'])}\n\n"
 
 
 def sort_properties(schema: dict) -> dict:

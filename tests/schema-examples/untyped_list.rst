@@ -22,8 +22,8 @@ Type: `object`
 
 :Type: `string`
 :Required: Optional
-:Default: `"test"`
-:Possible Values: `test`
+:Default: ``"test"``
+:Possible Values: ``"test"``
 
 ----
 
@@ -35,5 +35,5 @@ A list of CIDR blocks allowed to connect.
 
 :Type: `array`
 :Required: Optional
-:Default: `[]`
+:Default: ``[]``
 :Possible Values: Any type

@@ -1,3 +1,7 @@
+## 0.0.4
+- Report a schema with an `enum` but no `type` as type `enum`, instead of `unspecified`,
+`object(?)` or `Missing type`
+
 ## 0.0.3
 
 - Fix crash when a property references a definition that does not exist
@@ -28,7 +32,6 @@
 - Recurse into nested tables for a property whose `type` is a list including `object`/`array`, not just a bare `object`/`array`
 - Strip the trailing space `csv-table` directives left when a schema/property had no title, which fought the `trailing-whitespace` pre-commit hook and never converged
 - Correct the `--suppress-undocumented` help text: it suppresses definitions, not properties
-
 ## 0.0.2
 
 - Allow recursion into objects and arrays with sub-tables, adding breadcrumbs for nesting

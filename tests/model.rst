@@ -123,7 +123,7 @@ The manufacturer's extras.
 
 :Type: `array`
 :Required: Optional
-:Default: `[]`
+:Default: ``[]``
 :Possible Values: :ref:`Airbag <def-airbag>` and/or :ref:`NavigationSystem <def-navigationsystem>` and/or :ref:`Upholstery <def-upholstery>`
 
 ----
@@ -175,7 +175,7 @@ The type of airbag.
 
 :Type: `string`
 :Required: Required
-:Possible Values: `front` `side` `curtain`
+:Possible Values: ``"front"``, ``"side"``, ``"curtain"``
 
 ----
 
@@ -204,7 +204,7 @@ The type of car.
 
 :Type: `string`
 :Required: Required
-:Possible Values: `sedan` `hatchback` `suv`
+:Possible Values: ``"sedan"``, ``"hatchback"``, ``"suv"``
 
 ----
 
@@ -216,7 +216,7 @@ The number of doors the car has.
 
 :Type: `integer`
 :Required: Optional
-:Default: `5`
+:Default: ``5``
 :Possible Values: integer
 
 ----
@@ -229,7 +229,7 @@ The number of passengers the car can carry.
 
 :Type: `integer`
 :Required: Optional
-:Default: `5`
+:Default: ``5``
 :Possible Values: integer
 
 ----
@@ -289,7 +289,7 @@ The type of fuel the engine uses.
 
 :Type: `string`
 :Required: Required
-:Possible Values: `gasoline` `diesel` `electric`
+:Possible Values: ``"gasoline"``, ``"diesel"``, ``"electric"``
 
 ----
 
@@ -313,7 +313,7 @@ Whether the engine has a turbo or not.
 
 :Type: `boolean`
 :Required: Optional
-:Default: `false`
+:Default: ``false``
 :Possible Values: boolean
 
 ----
@@ -344,7 +344,7 @@ Whether the car has heated seats.
 
 :Type: `boolean`
 :Required: Optional
-:Default: `true`
+:Default: ``true``
 :Possible Values: boolean
 
 ----
@@ -357,7 +357,7 @@ Whether the car has a heated steering wheel.
 
 :Type: `boolean`
 :Required: Optional
-:Default: `true`
+:Default: ``true``
 :Possible Values: boolean
 
 ----
@@ -370,7 +370,7 @@ Whether the car has parking sensors.
 
 :Type: `boolean`
 :Required: Optional
-:Default: `true`
+:Default: ``true``
 :Possible Values: boolean
 
 ----
@@ -383,7 +383,7 @@ Whether the car has adaptive cruise control
 
 :Type: `boolean`
 :Required: Optional
-:Default: `true`
+:Default: ``true``
 :Possible Values: boolean
 
 ----
@@ -413,7 +413,7 @@ Whether the car has heated seats.
 
 :Type: `boolean`
 :Required: Optional
-:Default: `false`
+:Default: ``false``
 :Possible Values: boolean
 
 ----
@@ -426,7 +426,7 @@ Whether the car has a heated steering wheel.
 
 :Type: `boolean`
 :Required: Optional
-:Default: `false`
+:Default: ``false``
 :Possible Values: boolean
 
 ----
@@ -439,7 +439,7 @@ Whether the car has parking sensors.
 
 :Type: `boolean`
 :Required: Optional
-:Default: `true`
+:Default: ``true``
 :Possible Values: boolean
 
 ----
@@ -467,7 +467,7 @@ The type of navigation system.
 
 :Type: `string`
 :Required: Required
-:Possible Values: `gps` `carplay` `androidauto`
+:Possible Values: ``"gps"``, ``"carplay"``, ``"androidauto"``
 
 ----
 
@@ -495,7 +495,7 @@ The type of upholstery.
 
 :Type: `string`
 :Required: Required
-:Possible Values: `leather` `fabric`
+:Possible Values: ``"leather"``, ``"fabric"``
 
 ----
 
@@ -507,5 +507,5 @@ Metadata about the stitching.
 
 :Type: `object`
 :Required: Optional
-:Default: `{}`
+:Default: ``{}``
 :Possible Values: object

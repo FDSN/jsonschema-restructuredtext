@@ -50,7 +50,7 @@ Age in years which must be equal to or greater than zero.
 
 :Type: `integer`
 :Required: Optional
-:Default: `25`
+:Default: ``25``
 :Possible Values: `0 <= x <= 150` and multiple of `1`
 
 ----
